@@ -1,2 +1,0 @@
-# ArhamApp
-Arham mobile app
