@@ -24,7 +24,7 @@ public class YogaActivity extends AppCompatActivity {
     private int currentTime = 0;
     private Handler mHandler = new Handler();
     private ArcProgress progressView;
-    private int video_time = 65;
+    private int video_time = 12*60+4;
 
     private boolean isPlaying;
 

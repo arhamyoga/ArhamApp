@@ -286,7 +286,7 @@ public class ArcProgress extends View {
         paint.setColor(finishedStrokeColor);
         canvas.drawArc(rectF, finishedStartAngle, finishedSweepAngle, false, paint);
 
-        String text = String.valueOf(getProgress());
+        String text = Utils.convertToMMSSTimeString(getProgress());
         if (!TextUtils.isEmpty(text)) {
             textPaint.setColor(textColor);
             textPaint.setTextSize(textSize);

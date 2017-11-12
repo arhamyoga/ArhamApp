@@ -6,7 +6,7 @@ import android.content.res.Resources;
  * Created by bruce on 14-11-6.
  */
 public final class Utils {
-    
+
     private Utils() {
     }
     
@@ -19,4 +19,12 @@ public final class Utils {
         final float scale = resources.getDisplayMetrics().scaledDensity;
         return sp * scale;
     }
+
+    public static String convertToMMSSTimeString(int progress) {
+        int min = progress / 60;
+        int sec = progress % 60;
+        return min + ":" + (sec<=9 ? "0": "") + sec;
+    }
+
+
 }
