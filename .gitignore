@@ -31,6 +31,13 @@ proguard/
 
 # Android Studio captures folder
 captures/
+*.iml
+.idea
+#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
+.gradle
+build/
+.navigation
+output.json #Since Android Studio 3.0
 
 # Intellij
 *.iml
