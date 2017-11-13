@@ -1,10 +1,12 @@
 package net.yoga;
 
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.VideoView;
@@ -33,6 +35,14 @@ public class YogaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yoga);
         videoView = (VideoView) findViewById(R.id.videoView);
+        videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                Log.d("video", "setOnErrorListener ");
+                return true;
+            }
+        });
         progressView = (ArcProgress) findViewById(R.id.circleView);
         playButton = (ImageButton) findViewById(R.id.playView);
 
