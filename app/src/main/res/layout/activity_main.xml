@@ -6,37 +6,9 @@
     android:layout_height="match_parent"
     tools:context="net.yoga.MainActivity">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
-        android:layout_width="368dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        card_view:cardCornerRadius="@dimen/card_album_radius"
-        android:layout_centerHorizontal="true">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/album_height">
-
-            <ImageView
-                android:id="@+id/thumbnail"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/album_cover_height"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:src="@drawable/banner"
-                android:scaleType="fitXY" />
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/card_view"
         android:layout_above="@+id/start"
         android:gravity="center"
         android:layout_marginLeft="25dp"
@@ -44,22 +16,12 @@
         android:layout_marginTop="30dp"
         android:layout_marginBottom="15dp">
 
-        <ScrollView
-            android:id="@+id/scrollView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:scrollbars="vertical"
-            android:fillViewport="true">
-
-            <TextView
-                android:id="@+id/description"
+            <WebView
+                android:id="@+id/introWebView"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
                 android:layout_weight="1.0"
-                android:text="@string/description"/>
-
-        </ScrollView>
+                android:layout_height="fill_parent"
+                />
 
     </LinearLayout>
 
