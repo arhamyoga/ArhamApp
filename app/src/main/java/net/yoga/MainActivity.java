@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.WebView;
 
-import net.yoga.lib.FirebaseInstance;
+import net.yoga.lib.FirebaseEventLogManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,8 +14,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        FirebaseInstance.initialize(this);
 
         /*Add in Oncreate() funtion after setContentView()*/
         WebView webView = (WebView) findViewById(R.id.introWebView);

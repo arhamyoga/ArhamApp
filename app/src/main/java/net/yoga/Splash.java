@@ -6,16 +6,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
-import net.yoga.lib.FirebaseInstance;
+import net.yoga.lib.FirebaseEventLogManager;
 
 /**
  * Created by mvnpavan on 08/11/17.
  */
 
 public class Splash extends AppCompatActivity {
+
+    private static final String TAG = "ARM-S";
 
     private Context context;
 
@@ -26,8 +27,8 @@ public class Splash extends AppCompatActivity {
 
         context = this;
 
-        FirebaseInstance.initialize(this);
-        FirebaseInstance.logArhamAppStarted();
+        FirebaseEventLogManager.initialize(this);
+        FirebaseEventLogManager.logArhamAppStarted();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -37,6 +38,6 @@ public class Splash extends AppCompatActivity {
                 context.startActivity(intent);
                 finish();
             }
-        }, 3000);
+        }, 2000);
     }
 }

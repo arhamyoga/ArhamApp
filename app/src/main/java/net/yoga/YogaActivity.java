@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import android.widget.VideoView;
 
 import net.yoga.lib.ArcProgress;
-import net.yoga.lib.FirebaseInstance;
+import net.yoga.lib.FirebaseEventLogManager;
 
 
 /**
@@ -43,7 +43,7 @@ public class YogaActivity extends AppCompatActivity {
                 progressView.setVisibility(View.INVISIBLE);
                 playButton.setVisibility(View.VISIBLE);
 
-                FirebaseInstance.logArhamSessionCompleted();
+                FirebaseEventLogManager.logArhamSessionCompleted();
             }
         }
     };
@@ -99,7 +99,7 @@ public class YogaActivity extends AppCompatActivity {
         currentTime = video_time;
         updateProgressBar();
 
-        FirebaseInstance.logArhamSessionStarted();
+        FirebaseEventLogManager.logArhamSessionStarted();
     }
 
     public void updateProgressBar() {

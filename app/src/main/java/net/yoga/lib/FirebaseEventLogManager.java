@@ -10,7 +10,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
  * Created by nayan on 8/12/17.
  */
 
-public class FirebaseInstance {
+public class FirebaseEventLogManager {
 
     private static FirebaseAnalytics fbInstance;
     private static String androidDeviceId;
@@ -26,21 +26,20 @@ public class FirebaseInstance {
     }
 
     public static void logArhamAppStarted() {
-        logEvent("Arham.AppStarted", androidDeviceId);
+        logEvent("arham_app_started");
     }
 
     public static void logArhamSessionStarted() {
-        logEvent("Arham.SessionStarted", androidDeviceId);
+        logEvent("arham_session_started");
     }
 
     public static void logArhamSessionCompleted() {
-        logEvent("Arham.SessionCompleted", androidDeviceId);
+        logEvent("arham_session_completed");
     }
 
-    private static void logEvent(String id, String name) {
+    private static void logEvent(String eventName) {
         Bundle bundle = new Bundle();
-        bundle.putString(id, name);
         bundle.putString("deviceId", androidDeviceId);
-        fbInstance.logEvent("Arham", bundle);
+        fbInstance.logEvent(eventName, bundle);
     }
 }
