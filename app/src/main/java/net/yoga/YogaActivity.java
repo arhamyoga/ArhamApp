@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.VideoView;
 
 import net.yoga.lib.ArcProgress;
+import net.yoga.lib.FirebaseInstance;
 
 
 /**
@@ -29,6 +30,23 @@ public class YogaActivity extends AppCompatActivity {
     private int video_time = 12*60+4;
 
     private boolean isPlaying;
+    private Runnable UpdateProgress = new Runnable() {
+        public void run() {
+            if (isPlaying) {
+                currentTime = currentTime - 1;
+                progressView.setProgress(currentTime);
+            }
+            if (currentTime > 0) {
+                mHandler.postDelayed(this, 1000);
+            } else if (currentTime == 0) {
+                isPlaying = false;
+                progressView.setVisibility(View.INVISIBLE);
+                playButton.setVisibility(View.VISIBLE);
+
+                FirebaseInstance.logArhamSessionCompleted();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +98,8 @@ public class YogaActivity extends AppCompatActivity {
         progressView.setMax(video_time);
         currentTime = video_time;
         updateProgressBar();
+
+        FirebaseInstance.logArhamSessionStarted();
     }
 
     public void updateProgressBar() {
@@ -87,20 +107,4 @@ public class YogaActivity extends AppCompatActivity {
             mHandler.post(UpdateProgress);
         }
     }
-
-    private Runnable UpdateProgress = new Runnable() {
-        public void run() {
-            if (isPlaying) {
-                currentTime = currentTime - 1;
-                progressView.setProgress(currentTime);
-            }
-            if (currentTime > 0) {
-                mHandler.postDelayed(this, 1000);
-            } else if (currentTime == 0) {
-                isPlaying = false;
-                progressView.setVisibility(View.INVISIBLE);
-                playButton.setVisibility(View.VISIBLE);
-            }
-        }
-    };
 }

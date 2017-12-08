@@ -15,7 +15,7 @@ android {
         applicationId "net.yoga"
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 4
+        versionCode 6
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -28,6 +28,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-core:11.0.4'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -42,3 +43,6 @@ dependencies {
 
     apply plugin: 'com.google.gms.google-services'
 }
+
+
+apply plugin: 'com.google.gms.google-services'
