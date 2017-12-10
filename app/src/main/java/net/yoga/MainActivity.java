@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.WebView;
 
-import net.yoga.lib.FirebaseEventLogManager;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override

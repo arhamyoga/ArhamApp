@@ -6,9 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
-import net.yoga.lib.FirebaseEventLogManager;
+import net.yoga.lib.FBEventLogManager;
 
 /**
  * Created by mvnpavan on 08/11/17.
@@ -27,8 +26,8 @@ public class Splash extends AppCompatActivity {
 
         context = this;
 
-        FirebaseEventLogManager.initialize(this);
-        FirebaseEventLogManager.logArhamAppStarted();
+        FBEventLogManager.initialize(this);
+        FBEventLogManager.logArhamAppStarted();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

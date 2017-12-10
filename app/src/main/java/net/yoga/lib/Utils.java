@@ -7,6 +7,8 @@ import android.content.res.Resources;
  */
 public final class Utils {
 
+    public static final String TAG = "ARM";
+
     private Utils() {
     }
     

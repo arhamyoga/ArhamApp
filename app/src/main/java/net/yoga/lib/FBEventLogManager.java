@@ -10,7 +10,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
  * Created by nayan on 8/12/17.
  */
 
-public class FirebaseEventLogManager {
+public class FBEventLogManager {
 
     private static FirebaseAnalytics fbInstance;
     private static String androidDeviceId;
