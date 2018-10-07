@@ -22,6 +22,7 @@ public class FBEventLogManager {
                     Settings.Secure.ANDROID_ID);
         } else {
             // TODO log duplicate initialize called
+            androidDeviceId = "";
         }
     }
 
