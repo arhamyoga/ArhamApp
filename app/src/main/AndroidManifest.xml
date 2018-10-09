@@ -4,9 +4,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/yoga"
+        android:icon="@drawable/yoga_new"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/yoga"
+        android:roundIcon="@drawable/yoga_new"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
