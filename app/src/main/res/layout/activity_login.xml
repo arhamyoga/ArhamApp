@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_bcg_new"
+    android:orientation="vertical"
+    tools:context=".activities.LoginActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Welcome You"
+        android:textSize="23dp"
+        android:id="@+id/access"
+        android:gravity="center"
+        android:layout_marginTop="25dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Great to see you !"
+        android:id="@+id/engagingVideos"
+        android:textStyle="bold"
+        android:layout_below="@+id/access"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:id="@+id/phone_auth_fields"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_below="@+id/mobileNumber"
+                android:layout_marginTop="5dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/field_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="start"
+                    android:hint="Mobile Number"
+                    android:maxLength="10"
+                    android:inputType="phone"
+                    android:textAlignment="viewStart"
+                    android:textColor="#000"
+                    android:textColorHint="#000000"
+                    android:textSize="15dp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_below="@+id/mobileNumber"
+                android:layout_marginTop="5dp"
+                android:id="@+id/otpHeading">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/field_verification_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="start"
+                    android:visibility="gone"
+                    android:hint="OTP"
+                    android:inputType="number"
+                    android:textAlignment="viewStart"
+                    android:textColor="#000"
+                    android:textColorHint="#000000"
+                    android:textSize="15dp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="3.0">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:text="LOGIN"
+                android:onClick="launchMainScreen"
+                android:layout_below="@+id/otpHeading"
+                android:layout_marginTop="10dp"
+                android:id="@+id/button_start_verification"
+                android:textSize="18dp"
+                android:background="@drawable/btn_bg"
+                android:layout_marginHorizontal="100dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:text="Verify OTP"
+                android:layout_below="@+id/otpHeading"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:id="@+id/button_verify_phone"
+                android:textSize="18dp"
+                android:background="@drawable/btn_bg"
+                android:layout_marginHorizontal="100dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:text="Resend OTP"
+                android:layout_below="@+id/otpHeading"
+                android:layout_marginTop="10dp"
+                android:id="@+id/button_resend"
+                android:visibility="gone"
+                android:textSize="18dp"
+                android:background="@drawable/btn_bg"
+                android:layout_marginHorizontal="100dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/alreadyRegistered1"
+            android:gravity="center"
+            android:textColor="#000"
+            android:text="You must enter the number that is currently"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" present in your phone"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:textColor="#000"
+            android:layout_below="@+id/alreadyRegistered1"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:gravity="bottom"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true">
+
+            <TextView
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/alreadyRegistered"
+                android:text="Not registered?"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:textSize="15dp"
+                android:id="@+id/login"
+                android:onClick="launchSignUp"
+                android:textStyle="bold"
+                android:layout_toRightOf="@+id/alreadyRegistered"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

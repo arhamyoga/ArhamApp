@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.yoga">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/yoga_new"
@@ -9,8 +18,18 @@
         android:roundIcon="@drawable/yoga_new"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.SignUpActivity"></activity>
+        <activity android:name=".activities.LoginActivity" />
         <activity
-            android:name=".Splash"
+            android:name=".activities.ReminderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AA" />
+        <activity
+            android:name=".activities.NotificationsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AA" />
+        <activity
+            android:name=".activities.Splash"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -21,19 +40,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:name=".activities.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".YogaActivity"
-            android:screenOrientation="portrait"></activity>
+            android:name=".activities.YogaActivity"
+            android:screenOrientation="portrait" />
 
-        <service android:name=".lib.FBInstanceIDManager">
+        <service android:name=".utils.FBInstanceIDManager">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
-        <service android:name=".lib.FBMessagingManager">
+        <service android:name=".utils.FBMessagingManager">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

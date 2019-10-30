@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/action_welcome"
+            android:title="Arham Dhayan"
+            android:icon="@drawable/ic_timer_black_24dp"/>
+
+        <item
+            android:id="@+id/action_arhamTimer"
+            android:title="Arham Timer"
+            android:icon="@drawable/ic_event_note_black_24dp"/>
+
+        <item
+            android:id="@+id/action_notifications"
+            android:title="Notifications"
+            android:icon="@drawable/icon_notification"/>
+
+        <item
+            android:id="@+id/action_share"
+            app:showAsAction="always"
+            android:title="Share"
+            android:icon="@drawable/share"/>
+
+        <item
+            android:id="@+id/action_rateus"
+            android:title="Rate Us"
+            android:icon="@drawable/ic_thumb_up_black_24dp"/>
+
+        <item
+            android:id="@+id/action_logOut"
+            android:title="Log Out"
+            android:icon="@drawable/ic_power_settings_new_black_24dp"/>
+
+    </group>
+
+</menu>

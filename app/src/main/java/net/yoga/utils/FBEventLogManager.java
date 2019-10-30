@@ -1,4 +1,4 @@
-package net.yoga.lib;
+package net.yoga.utils;
 
 import android.content.Context;
 import android.os.Bundle;
