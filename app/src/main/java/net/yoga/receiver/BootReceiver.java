@@ -45,7 +45,7 @@ public class BootReceiver extends BroadcastReceiver {
     }
 
     private PendingIntent getPendingIntent() {
-        Intent localIntent = new Intent("com.android.workout.receiver.NOTIFY_ACTION");
+        Intent localIntent = new Intent("net.yoga.receiver.NOTIFY_ACTION");
         localIntent.setClass(context, NotificationPublisher.class);
         localIntent.setFlags(ErrorDialogData.BINDER_CRASH);
         return PendingIntent.getBroadcast(context, getNextRequestCode(), localIntent, 134217728);

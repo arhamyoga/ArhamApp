@@ -58,13 +58,13 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Produc
     class ProductViewHolder extends RecyclerView.ViewHolder {
 
         TextView f5137a;
-        TextView f5138b;
-        TextView f5139c;
-        TextView f5140d;
-        TextView f5141e;
-        TextView f5142f;
-        TextView f5143g;
-        TextView f5144h;
+        TextView sunday;
+        TextView monday;
+        TextView tuesday;
+        TextView wednesday;
+        TextView thursday;
+        TextView friday;
+        TextView saturday;
         ImageView f5145i;
         Switch f5146j;
         final ReminderAdapter f5147k;
@@ -73,13 +73,13 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Produc
             super(view);
             this.f5147k = reminderAdapter;
             this.f5137a = view.findViewById(R.id.time);
-            this.f5138b = view.findViewById(R.id.day1);
-            this.f5139c = view.findViewById(R.id.day2);
-            this.f5140d = view.findViewById(R.id.day3);
-            this.f5141e = view.findViewById(R.id.day4);
-            this.f5142f = view.findViewById(R.id.day5);
-            this.f5143g = view.findViewById(R.id.day6);
-            this.f5144h = view.findViewById(R.id.day7);
+            this.sunday = view.findViewById(R.id.day1);
+            this.monday = view.findViewById(R.id.day2);
+            this.tuesday = view.findViewById(R.id.day3);
+            this.wednesday = view.findViewById(R.id.day4);
+            this.thursday = view.findViewById(R.id.day5);
+            this.friday = view.findViewById(R.id.day6);
+            this.saturday = view.findViewById(R.id.day7);
             this.f5145i = view.findViewById(R.id.timedelete);
             this.f5146j = view.findViewById(R.id.timeswitch);
         }
@@ -136,48 +136,48 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Produc
                 showTimePickerDialog(reminderproduct, productViewHolder.getAdapterPosition());
             }
         });
-        productViewHolder.f5138b.setVisibility(0);
-        productViewHolder.f5139c.setVisibility(0);
-        productViewHolder.f5140d.setVisibility(0);
-        productViewHolder.f5141e.setVisibility(0);
-        productViewHolder.f5142f.setVisibility(0);
-        productViewHolder.f5143g.setVisibility(0);
-        productViewHolder.f5144h.setVisibility(0);
+        productViewHolder.sunday.setVisibility(View.VISIBLE);
+        productViewHolder.monday.setVisibility(View.VISIBLE);
+        productViewHolder.tuesday.setVisibility(View.VISIBLE);
+        productViewHolder.wednesday.setVisibility(View.VISIBLE);
+        productViewHolder.thursday.setVisibility(View.VISIBLE);
+        productViewHolder.friday.setVisibility(View.VISIBLE);
+        productViewHolder.saturday.setVisibility(View.VISIBLE);
         Log.d("Reminder adapter",this.reminderproduct.getMonday()+"");
-        if (this.reminderproduct.getMonday()) {
-            productViewHolder.f5138b.setText("M");
+        if (this.reminderproduct.getSunday()) {
+            productViewHolder.sunday.setText("S");
         } else {
-            productViewHolder.f5138b.setVisibility(8);
+            productViewHolder.sunday.setVisibility(View.GONE);
+        }
+        if (this.reminderproduct.getMonday()) {
+            productViewHolder.monday.setText("M");
+        } else {
+            productViewHolder.monday.setVisibility(View.GONE);
         }
         if (this.reminderproduct.getTuesday()) {
-            productViewHolder.f5139c.setText("T");
+            productViewHolder.tuesday.setText("T");
         } else {
-            productViewHolder.f5139c.setVisibility(8);
+            productViewHolder.tuesday.setVisibility(View.GONE);
         }
         if (this.reminderproduct.getWednesday()) {
-            productViewHolder.f5140d.setText("W");
+            productViewHolder.wednesday.setText("W");
         } else {
-            productViewHolder.f5140d.setVisibility(8);
+            productViewHolder.wednesday.setVisibility(View.GONE);
         }
         if (this.reminderproduct.getThurday()) {
-            productViewHolder.f5141e.setText("T");
+            productViewHolder.thursday.setText("T");
         } else {
-            productViewHolder.f5141e.setVisibility(8);
+            productViewHolder.thursday.setVisibility(View.GONE);
         }
         if (this.reminderproduct.getFriday()) {
-            productViewHolder.f5142f.setText("F");
+            productViewHolder.friday.setText("F");
         } else {
-            productViewHolder.f5142f.setVisibility(8);
+            productViewHolder.friday.setVisibility(View.GONE);
         }
         if (this.reminderproduct.getSaturday()) {
-            productViewHolder.f5143g.setText("S");
+            productViewHolder.saturday.setText("S");
         } else {
-            productViewHolder.f5143g.setVisibility(8);
-        }
-        if (this.reminderproduct.getSunday()) {
-            productViewHolder.f5144h.setText("S");
-        } else {
-            productViewHolder.f5144h.setVisibility(8);
+            productViewHolder.saturday.setVisibility(View.GONE);
         }
         productViewHolder.f5146j.setChecked(this.reminderproduct.getOnTime());
         productViewHolder.f5146j.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -255,19 +255,19 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Produc
                     reminder_custom2.setSaturday(false);
                     reminder_custom2.setSunday(false);
                     for (int i2 = 0; i2 < arrayList.size(); i2++) {
-                        if (arrayList.get(i2).equals(Integer.valueOf(0))) {
+                        if (arrayList.get(i2).equals(Integer.valueOf(1))) {
                             reminder_custom2.setMonday(true);
-                        } else if (arrayList.get(i2).equals(Integer.valueOf(1))) {
-                            reminder_custom2.setTuesday(true);
                         } else if (arrayList.get(i2).equals(Integer.valueOf(2))) {
-                            reminder_custom2.setWednesday(true);
+                            reminder_custom2.setTuesday(true);
                         } else if (arrayList.get(i2).equals(Integer.valueOf(3))) {
-                            reminder_custom2.setThurday(true);
+                            reminder_custom2.setWednesday(true);
                         } else if (arrayList.get(i2).equals(Integer.valueOf(4))) {
-                            reminder_custom2.setFriday(true);
+                            reminder_custom2.setThurday(true);
                         } else if (arrayList.get(i2).equals(Integer.valueOf(5))) {
-                            reminder_custom2.setSaturday(true);
+                            reminder_custom2.setFriday(true);
                         } else if (arrayList.get(i2).equals(Integer.valueOf(6))) {
+                            reminder_custom2.setSaturday(true);
+                        } else if (arrayList.get(i2).equals(Integer.valueOf(0))) {
                             reminder_custom2.setSunday(true);
                         }
                     }
@@ -306,7 +306,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Produc
             j = Integer.parseInt(getMinuteFormat().format(paramCalendar.getTime()));
             k=1;
         }
-//        paramAlarmHelper.schedulePendingIntent(i, j, k);
+        paramAlarmHelper.schedulePendingIntent(i, j, k);
     }
 
 }

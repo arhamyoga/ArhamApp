@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import net.yoga.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -80,6 +82,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(i2);
                 finish();
                 break;
+            case R.id.action_logOut:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(),Splash.class);
+                startActivity(intent);
+                finish();
         }
         return true;
     }

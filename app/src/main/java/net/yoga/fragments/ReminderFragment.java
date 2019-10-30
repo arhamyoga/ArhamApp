@@ -190,19 +190,19 @@ public class ReminderFragment extends Fragment {
                     Reminder reminder_custom = new Reminder();
                     reminder_custom.setTime(startTimeFormat().format(calendar.getTime()));
                     for (i = 0; i < arrayList.size(); i++) {
-                        if (arrayList.get(i).equals(Integer.valueOf(0))) {
+                        if (arrayList.get(i).equals(Integer.valueOf(1))) {
                             reminder_custom.setMonday(true);
-                        } else if (arrayList.get(i).equals(Integer.valueOf(1))) {
-                            reminder_custom.setTuesday(true);
                         } else if (arrayList.get(i).equals(Integer.valueOf(2))) {
-                            reminder_custom.setWednesday(true);
+                            reminder_custom.setTuesday(true);
                         } else if (arrayList.get(i).equals(Integer.valueOf(3))) {
-                            reminder_custom.setThurday(true);
+                            reminder_custom.setWednesday(true);
                         } else if (arrayList.get(i).equals(Integer.valueOf(4))) {
-                            reminder_custom.setFriday(true);
+                            reminder_custom.setThurday(true);
                         } else if (arrayList.get(i).equals(Integer.valueOf(5))) {
-                            reminder_custom.setSaturday(true);
+                            reminder_custom.setFriday(true);
                         } else if (arrayList.get(i).equals(Integer.valueOf(6))) {
+                            reminder_custom.setSaturday(true);
+                        } else if (arrayList.get(i).equals(Integer.valueOf(0))) {
                             reminder_custom.setSunday(true);
                         }
                     }
@@ -251,6 +251,6 @@ public class ReminderFragment extends Fragment {
             j = Integer.parseInt(getMinuteFormat().format(paramCalendar.getTime()));
             k=1;
         }
-//        paramAlarmHelper.schedulePendingIntent(i, j, k);
+        paramAlarmHelper.schedulePendingIntent(i, j, k);
     }
 }
