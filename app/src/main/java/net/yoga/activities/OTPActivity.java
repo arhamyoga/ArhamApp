@@ -31,6 +31,7 @@ public class OTPActivity extends AppCompatActivity {
     EditText otpEditText;
     private String mVerificationId;
     Button verifyOTP,resendOTP;
+    String status = "",mobNo="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,9 @@ public class OTPActivity extends AppCompatActivity {
         resendOTP = findViewById(R.id.button_resend);
 
         //getting mobile number from previous activity
-        Intent intent = getIntent();
-        final String mobNo = intent.getStringExtra("mobile");
+        Bundle bundle = getIntent().getExtras();
+        mobNo = bundle.getString("mobile");
+        status = bundle.getString("status");
         //requesting for the OTP
         sendVerificationCode(mobNo);
 
@@ -125,9 +127,18 @@ public class OTPActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //verification successful we will start the profile activity
-                            Intent intent = new Intent(OTPActivity.this, MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                            if(status.equals("login")) {
+                                Intent intent = new Intent(OTPActivity.this, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            } else {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("mobile",mobNo);
+                                Intent intent = new Intent(OTPActivity.this,SignUpActivity.class);
+                                intent.putExtras(bundle);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
 
                         } else {
 

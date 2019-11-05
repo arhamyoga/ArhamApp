@@ -2,15 +2,15 @@ package net.yoga.model;
 
 public class Notification {
 
-    private Long notifId;
+    private String notificationTitle;
     private String notificationContent;
 
-    public Long getNotifId() {
-        return notifId;
+    public String getNotificationTitle() {
+        return notificationTitle;
     }
 
-    public void setNotifId(Long notifId) {
-        this.notifId = notifId;
+    public void setNotificationTitle(String notificationTitle) {
+        this.notificationTitle = notificationTitle;
     }
 
     public String getNotificationContent() {

@@ -119,6 +119,7 @@
         android:layout_width="match_parent"
         android:layout_marginBottom="10dp"
         android:gravity="bottom"
+        android:visibility="gone"
         android:layout_height="wrap_content">
 
         <RelativeLayout
@@ -141,7 +142,6 @@
                 android:text="Register"
                 android:textSize="15dp"
                 android:id="@+id/login"
-                android:onClick="launchSignUp"
                 android:textStyle="bold"
                 android:layout_toRightOf="@+id/alreadyRegistered"/>
 

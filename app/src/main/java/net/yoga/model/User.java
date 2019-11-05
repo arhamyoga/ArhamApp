@@ -3,24 +3,13 @@ package net.yoga.model;
 public class User {
 
     private String userName;
-    private String mobileNumber;
-    private String email;
+    private String state;
     private String city;
+    private Integer noOfSessionsCompleted;
+    private String deviceId;
+    private String fcmId;
 
     public User() {
-    }
-
-    public User(String userName, String mobileNumber, String city) {
-        this.userName = userName;
-        this.mobileNumber = mobileNumber;
-        this.city = city;
-    }
-
-    public User(String userName, String mobileNumber, String email, String city) {
-        this.userName = userName;
-        this.mobileNumber = mobileNumber;
-        this.email = email;
-        this.city = city;
     }
 
     public String getUserName() {
@@ -31,20 +20,12 @@ public class User {
         this.userName = userName;
     }
 
-    public String getMobileNumber() {
-        return mobileNumber;
+    public String getState() {
+        return state;
     }
 
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getCity() {
@@ -53,5 +34,29 @@ public class User {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Integer getNoOfSessionsCompleted() {
+        return noOfSessionsCompleted;
+    }
+
+    public void setNoOfSessionsCompleted(Integer noOfSessionsCompleted) {
+        this.noOfSessionsCompleted = noOfSessionsCompleted;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getFcmId() {
+        return fcmId;
+    }
+
+    public void setFcmId(String fcmId) {
+        this.fcmId = fcmId;
     }
 }

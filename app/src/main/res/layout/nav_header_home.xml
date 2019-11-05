@@ -13,12 +13,12 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/navHeadingName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="#fff"
-        android:text="Arham App" />
+        android:text="" />
 
 </LinearLayout>

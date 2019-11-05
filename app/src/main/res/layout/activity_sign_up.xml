@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Arhan Dhyan Yoga"
+            android:text="Arham Dhyan Yoga"
             android:textSize="23dp"
             android:id="@+id/engagingVideos"
             android:textStyle="bold"
@@ -89,14 +89,14 @@
             android:id="@+id/emailHeading">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/email"
+                android:id="@+id/city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:fontFamily="sans-serif"
                 android:gravity="start"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
+                android:hint="City"
+                android:inputType="textAutoComplete"
                 android:textAlignment="viewStart"
                 android:textColor="#000"
                 android:textColorHint="#000000"
@@ -113,14 +113,14 @@
             android:id="@+id/cityHeading">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/city"
+                android:id="@+id/state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:fontFamily="sans-serif"
                 android:gravity="start"
-                android:hint="City"
-                android:inputType="text"
+                android:hint="State"
+                android:inputType="textAutoComplete"
                 android:textAlignment="viewStart"
                 android:textColor="#000"
                 android:textColorHint="#000000"
@@ -147,7 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_alignParentRight="true">
 
             <TextView
