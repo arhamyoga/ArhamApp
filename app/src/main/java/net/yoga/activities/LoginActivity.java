@@ -1,10 +1,17 @@
 package net.yoga.activities;
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +29,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import net.yoga.R;
-import net.yoga.model.User;
+
+import static net.yoga.utils.Utils.isOnline;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -37,6 +45,28 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        try {
+            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:net.yoga"));
+            startActivity(intent);
+
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        int PERMISSION_ALL = 1;
+        String[] PERMISSIONS = {
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_SMS,
+                Manifest.permission.ACCESS_NETWORK_STATE
+        };
+
+        if(!hasPermissions(this, PERMISSIONS)){
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        }
+
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance(FirebaseApp.initializeApp(getApplicationContext()));
         progressDialog = new ProgressDialog(this);
@@ -60,37 +90,52 @@ public class LoginActivity extends AppCompatActivity {
                     mobileNumber.requestFocus();
                     return;
                 } else {
-                    progressDialog.setMessage("Please wait...");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
-                    DocumentReference docRef = db.collection("users").document("+91"+inputMobile);
-                    docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            Bundle bundle = new Bundle();
-                            Log.d("LoginDoc",documentSnapshot.exists()+"");
-                            if(documentSnapshot.exists()){
-                                bundle.putString("status","login");
-                                bundle.putString("mobile",inputMobile);
-                            } else {
-                                bundle.putString("mobile",inputMobile);
-                                bundle.putString("status","register");
+                    if(isOnline(getApplicationContext())) {
+                        progressDialog.setMessage("Please wait...");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                        DocumentReference docRef = db.collection("users").document("+91" + inputMobile);
+                        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                Bundle bundle = new Bundle();
+                                Log.d("LoginDoc", documentSnapshot.exists() + "");
+                                if (documentSnapshot.exists()) {
+                                    bundle.putString("status", "login");
+                                    bundle.putString("mobile", inputMobile);
+                                } else {
+                                    bundle.putString("mobile", inputMobile);
+                                    bundle.putString("status", "register");
+                                }
+                                Log.d("bundle", bundle.toString());
+                                Intent i = new Intent(getApplicationContext(), OTPActivity.class);
+                                i.putExtras(bundle);
+                                progressDialog.dismiss();
+                                startActivity(i);
                             }
-                            Log.d("bundle",bundle.toString());
-                            Intent i = new Intent(getApplicationContext(), OTPActivity.class);
-                            i.putExtras(bundle);
-                            progressDialog.dismiss();
-                            startActivity(i);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            check=0;
-                        }
-                    });
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                check = 0;
+                            }
+                        });
+                    } else {
+                        Snackbar.make(findViewById(android.R.id.content),"Please check your internet...",Snackbar.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override

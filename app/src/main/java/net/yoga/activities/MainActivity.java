@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,12 +27,16 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import net.yoga.R;
 import net.yoga.model.User;
 
+import static net.yoga.utils.Utils.isOnline;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView navHeadingName;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     String userName="";
+    DrawerLayout drawer=null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -67,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     userName = currentUser.getUserName();
                     Log.d("username",userName);
                     navHeadingName = navigationView.findViewById(R.id.navHeadingName);
+                    userName = Character.toUpperCase(userName.charAt(0))+userName.substring(1);
                     navHeadingName.setText("Welcome \n"+userName);
                 }
             }
@@ -117,12 +124,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 finish();
                 break;
             case R.id.action_logOut:
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(),Splash.class);
-                startActivity(intent);
-                finish();
+                if(isOnline(getApplicationContext())) {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(getApplicationContext(), Splash.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Snackbar.make(findViewById(android.R.id.content),"Please check your internet...",Snackbar.LENGTH_SHORT).show();
+                }
         }
-        return true;
+        drawer.closeDrawer(GravityCompat.START);
+        return false;
     }
 
     private void shareAction(){
