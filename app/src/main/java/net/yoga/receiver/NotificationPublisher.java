@@ -69,7 +69,7 @@ public class NotificationPublisher extends BroadcastReceiver {
             intent.addFlags(ErrorDialogData.BINDER_CRASH);
             Notification build = new Builder(context).setContentIntent(PendingIntent.getActivity(context, getNextNotifId(), intent, 0))
                     .setAutoCancel(true).setWhen(System.currentTimeMillis()).setSmallIcon(R.drawable.icon_notification)
-                    .setContentTitle("Hey! it's Yoga Time").setContentText("Let's do some Arham Yoga").setDefaults(1).build();
+                    .setContentTitle("Hey! it's Arham Time").setContentText("Let's do some Arham Yoga").setDefaults(1).build();
             if (f3360a || notificationManager != null) {
                 notificationManager.notify(getNextNotifId(), build);
                 return;

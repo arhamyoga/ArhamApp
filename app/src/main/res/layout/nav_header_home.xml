@@ -19,6 +19,13 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="#fff"
-        android:text="fsdfs" />
+        android:text="" />
+
+    <TextView
+        android:id="@+id/session_count"
+        android:textSize="15sp"
+        android:textColor="#fff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

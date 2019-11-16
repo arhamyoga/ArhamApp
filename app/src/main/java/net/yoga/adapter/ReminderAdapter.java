@@ -145,37 +145,37 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Produc
         productViewHolder.saturday.setVisibility(View.VISIBLE);
         Log.d("Reminder adapter",this.reminderproduct.getMonday()+"");
         if (this.reminderproduct.getSunday()) {
-            productViewHolder.sunday.setText("S");
+            productViewHolder.sunday.setText("Sun");
         } else {
             productViewHolder.sunday.setVisibility(View.GONE);
         }
         if (this.reminderproduct.getMonday()) {
-            productViewHolder.monday.setText("M");
+            productViewHolder.monday.setText("Mon");
         } else {
             productViewHolder.monday.setVisibility(View.GONE);
         }
         if (this.reminderproduct.getTuesday()) {
-            productViewHolder.tuesday.setText("T");
+            productViewHolder.tuesday.setText("Tues");
         } else {
             productViewHolder.tuesday.setVisibility(View.GONE);
         }
         if (this.reminderproduct.getWednesday()) {
-            productViewHolder.wednesday.setText("W");
+            productViewHolder.wednesday.setText("Wed");
         } else {
             productViewHolder.wednesday.setVisibility(View.GONE);
         }
         if (this.reminderproduct.getThurday()) {
-            productViewHolder.thursday.setText("T");
+            productViewHolder.thursday.setText("Thu");
         } else {
             productViewHolder.thursday.setVisibility(View.GONE);
         }
         if (this.reminderproduct.getFriday()) {
-            productViewHolder.friday.setText("F");
+            productViewHolder.friday.setText("Fri");
         } else {
             productViewHolder.friday.setVisibility(View.GONE);
         }
         if (this.reminderproduct.getSaturday()) {
-            productViewHolder.saturday.setText("S");
+            productViewHolder.saturday.setText("Sat");
         } else {
             productViewHolder.saturday.setVisibility(View.GONE);
         }

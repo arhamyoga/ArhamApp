@@ -1,5 +1,6 @@
 package net.yoga.fragments;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,14 +14,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 
 import net.yoga.R;
+import net.yoga.activities.MainActivity;
 import net.yoga.adapter.VideoListAdapter;
 import net.yoga.model.YoutubeVideo;
 import net.yoga.utils.Constants;
@@ -44,6 +48,7 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
     List<YoutubeVideo> youtubeVideos;
     String title = "";
     YoutubeVideo youtubeVideo;
+    ProgressBar progressBar;
     private static final String TAG = "SpecialSessionFragment";
 
     @Override
@@ -66,6 +71,7 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
         setHasOptionsMenu(true);
         VideoList = view.findViewById(R.id.videos_list);
         youtubeVideos = new ArrayList<>();
+        progressBar = view.findViewById(R.id.no_videos);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getContext());
         VideoList.setLayoutManager(layoutManager);
         adapter=new VideoListAdapter(view.getContext(),youtubeVideos);
@@ -90,6 +96,15 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
         if (thumbnailLoader.hasNext())
             thumbnailLoader.next();
 //        new Handler().postDelayed(this::add,15000);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == 16908332) {
+            Intent i = new Intent(getActivity(), MainActivity.class);
+            startActivity(i);
+            getActivity().finish();
+        }
+        return super.onOptionsItemSelected(menuItem);
     }
 
     @Override
@@ -120,6 +135,7 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
         @Override
         protected void onPostExecute(String s) {
             try {
+                progressBar.setVisibility(View.GONE);
                 JSONObject jsonObject = new JSONObject(s);
                 title = jsonObject.getString("title");
                 youtubeVideo.setTitle(title);

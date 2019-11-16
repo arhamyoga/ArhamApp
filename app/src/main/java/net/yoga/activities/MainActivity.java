@@ -1,8 +1,10 @@
 package net.yoga.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -31,11 +33,13 @@ import static net.yoga.utils.Utils.isOnline;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView navHeadingName;
+    TextView navHeadingName,sessionCount;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     String userName="";
     DrawerLayout drawer=null;
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor prefsEditor;
 
 
     @Override
@@ -49,6 +53,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setTimestampsInSnapshotsEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext().getApplicationContext());
+        prefsEditor = mSharedPreferences.edit();
 
         String currentMobile = mAuth.getCurrentUser().getPhoneNumber();
         DocumentReference docRef = db.collection("users").document(currentMobile);
@@ -73,8 +80,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     userName = currentUser.getUserName();
                     Log.d("username",userName);
                     navHeadingName = navigationView.findViewById(R.id.navHeadingName);
+                    sessionCount = navigationView.findViewById(R.id.session_count);
                     userName = Character.toUpperCase(userName.charAt(0))+userName.substring(1);
-                    navHeadingName.setText("Welcome \n"+userName+"\nSessions Completed:"+currentUser.getNoOfSessionsCompleted());
+                    navHeadingName.setText("Welcome \n"+userName);
+                    sessionCount.setText("Sessions completed : "+currentUser.getNoOfSessionsCompleted());
                 }
             }
         });
@@ -132,6 +141,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.action_logOut:
                 if(isOnline(getApplicationContext())) {
                     FirebaseAuth.getInstance().signOut();
+                    prefsEditor.clear();
+                    prefsEditor.apply();
                     Intent intent = new Intent(getApplicationContext(), Splash.class);
                     startActivity(intent);
                     finish();
