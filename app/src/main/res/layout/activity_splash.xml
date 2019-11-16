@@ -14,11 +14,15 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
+        <!--<ImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:src="@drawable/splash"-->
+            <!--/>-->
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/splash"
-            />
+            android:src="@drawable/splash_yoga" />
 
     </android.support.v7.widget.CardView>
 

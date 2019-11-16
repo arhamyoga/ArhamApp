@@ -19,6 +19,6 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="#fff"
-        android:text="" />
+        android:text="fsdfs" />
 
 </LinearLayout>

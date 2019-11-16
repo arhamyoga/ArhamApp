@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
         android:allowBackup="true"
@@ -18,25 +18,40 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/yoga_new"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
 
-        <activity android:name=".activities.OTPActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.VideoPlayerActivity"
+            android:theme="@style/AA"
+            android:screenOrientation="landscape"></activity>
+
+        <activity android:name=".activities.SpecialSessionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AA"/>
+
+        <activity
+            android:name=".activities.OTPActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".activities.SignUpActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".activities.LoginActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".activities.ReminderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AA" />
+
         <activity
             android:name=".activities.NotificationsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AA" />
+
         <activity
             android:name=".activities.Splash"
             android:label="@string/app_name"
@@ -48,86 +63,113 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.YogaActivity"
-            android:screenOrientation="portrait" />
-
-        <!--already included services-->
-        <!--<service android:name=".utils.FBInstanceIDManager">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.google.firebase.INSTANCE_ID_EVENT" />-->
-            <!--</intent-filter>-->
-        <!--</service>-->
-        <!--<service android:name=".utils.FBMessagingManager">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-            <!--</intent-filter>-->
-        <!--</service>-->
-
-        <!--my services-->
-
-        <service android:name=".fcm.MyFirebaseMessagingService" android:enabled="true" android:exported="true">
+            android:screenOrientation="portrait" /> <!-- already included services -->
+        <!-- <service android:name=".utils.FBInstanceIDManager"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.firebase.INSTANCE_ID_EVENT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <!-- <service android:name=".utils.FBMessagingManager"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <!-- my services -->
+        <service
+            android:name=".fcm.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
         <service android:name=".fcm.MyFirebaseInstanceIDService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
-        <service android:name=".fcm.MyJobService" android:exported="false">
+        <service
+            android:name=".fcm.MyJobService"
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
 
-        <service android:exported="true" android:name="com.google.firebase.messaging.FirebaseMessagingService">
+        <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:exported="true">
             <intent-filter android:priority="-500">
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <receiver android:name=".receiver.NotificationPublisher" android:exported="true" android:enabled="true">
+        <receiver
+            android:name=".receiver.NotificationPublisher"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
-                <action android:name=".receiver.NOTIFY_ACTION"/>
-                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name=".receiver.NOTIFY_ACTION" />
+                <action android:name="android.intent.action.TIME_SET" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".receiver.BootReceiver" android:enabled="true" android:exported="true">
+        <receiver
+            android:name=".receiver.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
-                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
-                <action android:name="android.intent.action.REBOOT"/>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.REBOOT" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".receiver.DailyBrodcast" android:enabled="true" android:exported="true">
+        <receiver
+            android:name=".receiver.DailyBrodcast"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
-                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
-                <action android:name="android.intent.action.REBOOT"/>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.REBOOT" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".receiver.NotificationReceiver" android:enabled="true" android:exported="true"/>
+        <receiver
+            android:name=".receiver.NotificationReceiver"
+            android:enabled="true"
+            android:exported="true" />
 
-        <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/icon_notification"/>
-        <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/colorAccent"/>
-        <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="fcm_default_channel"/>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/icon_notification" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="fcm_default_channel" />
 
     </application>
 

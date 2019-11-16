@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:background="@color/colorgrey"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.AppBarLayout
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:background="@color/white"
+            android:layout_width="fill_parent"
+            android:layout_height="?actionBarSize"
+            app:navigationIcon="?homeAsUpIndicator"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <TextView
+                    android:textSize="20.0sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="start|center"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:text="Special Sessions"
+                    android:layout_weight="1.0" />
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:onClick="imageclick" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/videos_list"
+            android:background="@color/colorgrey"
+            android:scrollbars="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/no_videos" />
+
+    </FrameLayout>
+
+</LinearLayout>

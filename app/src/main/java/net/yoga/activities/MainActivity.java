@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //navigation drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Log.d("username",userName);
                     navHeadingName = navigationView.findViewById(R.id.navHeadingName);
                     userName = Character.toUpperCase(userName.charAt(0))+userName.substring(1);
-                    navHeadingName.setText("Welcome \n"+userName);
+                    navHeadingName.setText("Welcome \n"+userName+"\nSessions Completed:"+currentUser.getNoOfSessionsCompleted());
                 }
             }
         });
@@ -106,6 +106,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_specialSession:
+                Intent i3 = new Intent(getApplicationContext(),SpecialSessionActivity.class);
+                startActivity(i3);
+                finish();
+                break;
+
             case R.id.action_share:
                 Log.d("Main Activity","Share Action");
                 shareAction();

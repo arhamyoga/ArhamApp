@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Welcome You"
+        android:text="Welcome to"
         android:textSize="23dp"
         android:id="@+id/access"
         android:gravity="center"
@@ -20,9 +20,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Great to see you !"
+        android:text="Arham Yoga &amp; Meditation"
         android:id="@+id/engagingVideos"
         android:textStyle="bold"
+        android:textSize="30dp"
         android:layout_below="@+id/access"
         android:gravity="center"/>
 
@@ -102,7 +103,7 @@
             android:id="@+id/alreadyRegistered1"
             android:gravity="center"
             android:textColor="#000"
-            android:text="You must enter the number that is currently"/>
+            android:text="Please enter your 10 digit mobile number"/>
 
         <TextView
             android:layout_width="match_parent"

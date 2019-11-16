@@ -7,6 +7,11 @@
     <group android:checkableBehavior="single">
 
         <item
+            android:id="@+id/action_specialSession"
+            android:title="Special Sessions"
+            android:icon="@drawable/ic_folder_special_black_24dp"/>
+
+        <item
             android:id="@+id/action_arhamTimer"
             android:title="Arham Timer"
             android:icon="@drawable/ic_event_note_black_24dp"/>
