@@ -2,14 +2,23 @@ package net.yoga.model;
 
 public class User {
 
-    private String userName;
-    private String state;
-    private String city;
-    private Integer noOfSessionsCompleted;
-    private String deviceId;
-    private String fcmId;
+    public String userName;
+    public String state;
+    public String city;
+    public Integer noOfSessionsCompleted;
+    public String deviceId;
+    public String fcmId;
 
     public User() {
+    }
+
+    public User(String userName, String state, String city, Integer noOfSessionsCompleted, String deviceId, String fcmId) {
+        this.userName = userName;
+        this.state = state;
+        this.city = city;
+        this.noOfSessionsCompleted = noOfSessionsCompleted;
+        this.deviceId = deviceId;
+        this.fcmId = fcmId;
     }
 
     public String getUserName() {

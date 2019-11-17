@@ -9,22 +9,17 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
@@ -81,47 +76,36 @@ public class LoginActivity extends AppCompatActivity {
         db.setFirestoreSettings(settings);
 
         //on click listeners
-        proceed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String inputMobile = mobileNumber.getText().toString();
-                if(inputMobile.length()!=10){
-                    mobileNumber.setError("Enter a valid mobile");
-                    mobileNumber.requestFocus();
-                    return;
+        proceed.setOnClickListener(v -> {
+            final String inputMobile = mobileNumber.getText().toString();
+            if(inputMobile.length()!=10){
+                mobileNumber.setError("Enter a valid mobile");
+                mobileNumber.requestFocus();
+                return;
+            } else {
+                if(isOnline(getApplicationContext())) {
+                    progressDialog.setMessage("Please wait...");
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+                    DocumentReference docRef = db.collection("users").document("+91" + inputMobile);
+                    docRef.get().addOnSuccessListener(documentSnapshot -> {
+                        Bundle bundle = new Bundle();
+                        Log.d("LoginDoc", documentSnapshot.exists() + "");
+                        if (documentSnapshot.exists()) {
+                            bundle.putString("status", "login");
+                            bundle.putString("mobile", inputMobile);
+                        } else {
+                            bundle.putString("mobile", inputMobile);
+                            bundle.putString("status", "register");
+                        }
+                        Log.d("bundle", bundle.toString());
+                        Intent i = new Intent(getApplicationContext(), OTPActivity.class);
+                        i.putExtras(bundle);
+                        progressDialog.dismiss();
+                        startActivity(i);
+                    }).addOnFailureListener(e -> check = 0);
                 } else {
-                    if(isOnline(getApplicationContext())) {
-                        progressDialog.setMessage("Please wait...");
-                        progressDialog.setCancelable(false);
-                        progressDialog.show();
-                        DocumentReference docRef = db.collection("users").document("+91" + inputMobile);
-                        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                Bundle bundle = new Bundle();
-                                Log.d("LoginDoc", documentSnapshot.exists() + "");
-                                if (documentSnapshot.exists()) {
-                                    bundle.putString("status", "login");
-                                    bundle.putString("mobile", inputMobile);
-                                } else {
-                                    bundle.putString("mobile", inputMobile);
-                                    bundle.putString("status", "register");
-                                }
-                                Log.d("bundle", bundle.toString());
-                                Intent i = new Intent(getApplicationContext(), OTPActivity.class);
-                                i.putExtras(bundle);
-                                progressDialog.dismiss();
-                                startActivity(i);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                check = 0;
-                            }
-                        });
-                    } else {
-                        Snackbar.make(findViewById(android.R.id.content),"Please check your internet...",Snackbar.LENGTH_SHORT).show();
-                    }
+                    Snackbar.make(findViewById(android.R.id.content),"Please check your internet...",Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -148,35 +132,29 @@ public class LoginActivity extends AppCompatActivity {
         if (currentUser != null) {
             final String mobileNumber1 = currentUser.getPhoneNumber();
             DocumentReference docRef = db.collection("users").document(mobileNumber1);
-            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Log.d("Document",documentSnapshot.exists()+"");
-                    if(documentSnapshot.exists()){
+            docRef.get().addOnSuccessListener(documentSnapshot -> {
+                Log.d("Document",documentSnapshot.exists()+"");
+                if(documentSnapshot.exists()){
 //                        User user = documentSnapshot.toObject(User.class);
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        progressDialog.dismiss();
-                        finish();
-                    } else {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("mobile",mobileNumber1);
-                        Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
-                        i.putExtras(bundle);
-                        progressDialog.dismiss();
-                        startActivity(i);
-                        finish();
-                    }
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    progressDialog.dismiss();
+                    finish();
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("mobile",mobileNumber1);
+                    Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
+                    i.putExtras(bundle);
+                    progressDialog.dismiss();
+                    startActivity(i);
+                    finish();
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
+            }).addOnFailureListener(e -> {
 //                    Bundle bundle = new Bundle();
 //                    bundle.putString("mobile",mobileNumber1);
 //                    startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
 //                    progressDialog.dismiss();
 //                    finish();
-                    Log.e("LoginActivity","Problem connecting to db");
-                }
+                Log.e("LoginActivity","Problem connecting to db");
             });
             Log.d("mobileNumberUser", mobileNumber1 + "");
         } else {

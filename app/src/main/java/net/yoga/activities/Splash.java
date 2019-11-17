@@ -33,13 +33,10 @@ public class Splash extends AppCompatActivity {
         FBEventLogManager.logArhamAppStarted();
 
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(context, LoginActivity.class);
-                context.startActivity(intent);
-                finish();
-            }
+        handler.postDelayed(() -> {
+            Intent intent = new Intent(context, LoginActivity.class);
+            context.startActivity(intent);
+            finish();
         }, 2000);
     }
 }

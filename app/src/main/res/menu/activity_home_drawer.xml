@@ -28,6 +28,11 @@
             android:icon="@drawable/share"/>
 
         <item
+            android:id="@+id/feedback"
+            android:icon="@drawable/ic_feedback_black_24dp"
+            android:title="Feedback" />
+
+        <item
             android:id="@+id/action_rateus"
             android:title="Rate Us"
             android:icon="@drawable/ic_thumb_up_black_24dp"/>

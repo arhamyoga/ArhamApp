@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -95,16 +94,13 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Produc
 
     private void showTimePickerDialog(final Reminder reminder_custom, final int i) {
         Calendar instance = Calendar.getInstance();
-        new TimePickerDialog(this.mCtx, new TimePickerDialog.OnTimeSetListener() {
-            /* renamed from: c */
-
-            public void onTimeSet(TimePicker timePicker, int i, int i2) {
-                if (timePicker.isShown()) {
-                    Calendar instance = Calendar.getInstance();
-                    instance.set(Calendar.HOUR_OF_DAY, i);
-                    instance.set(Calendar.MINUTE, i2);
-                    showDialog(instance, reminder_custom, i);
-                }
+        /* renamed from: c */
+        new TimePickerDialog(this.mCtx, (timePicker, i1, i2) -> {
+            if (timePicker.isShown()) {
+                Calendar instance1 = Calendar.getInstance();
+                instance1.set(Calendar.HOUR_OF_DAY, i1);
+                instance1.set(Calendar.MINUTE, i2);
+                showDialog(instance1, reminder_custom, i1);
             }
         }, instance.get(Calendar.HOUR_OF_DAY), instance.get(Calendar.MINUTE), false).show();
     }
@@ -129,12 +125,9 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Produc
     public void onBindViewHolder(final ProductViewHolder productViewHolder, int i) {
         this.reminderproduct = this.productList.get(i);
         productViewHolder.f5137a.setText(this.reminderproduct.getTime());
-        productViewHolder.f5137a.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                reminderproduct = productList.get(productViewHolder.getAdapterPosition());
-                showTimePickerDialog(reminderproduct, productViewHolder.getAdapterPosition());
-            }
+        productViewHolder.f5137a.setOnClickListener(view -> {
+            reminderproduct = productList.get(productViewHolder.getAdapterPosition());
+            showTimePickerDialog(reminderproduct, productViewHolder.getAdapterPosition());
         });
         productViewHolder.sunday.setVisibility(View.VISIBLE);
         productViewHolder.monday.setVisibility(View.VISIBLE);
@@ -180,16 +173,13 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Produc
             productViewHolder.saturday.setVisibility(View.GONE);
         }
         productViewHolder.f5146j.setChecked(this.reminderproduct.getOnTime());
-        productViewHolder.f5146j.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
-                reminderproduct = productList.get(productViewHolder.getAdapterPosition());
-                reminderproduct.setOnTime(z);
-                String toJson = gson.toJson(productList);
-                prefsEditor = mSharedPreferences.edit();
-                prefsEditor.putString("Reminder_customObjectList", toJson);
-                prefsEditor.apply();
-            }
+        productViewHolder.f5146j.setOnCheckedChangeListener((compoundButton, z) -> {
+            reminderproduct = productList.get(productViewHolder.getAdapterPosition());
+            reminderproduct.setOnTime(z);
+            String toJson = gson.toJson(productList);
+            prefsEditor = mSharedPreferences.edit();
+            prefsEditor.putString("Reminder_customObjectList", toJson);
+            prefsEditor.apply();
         });
         productViewHolder.f5145i.setOnClickListener(new View.OnClickListener() {
 
@@ -227,63 +217,57 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Produc
         builder.setTitle("Days");
         final ArrayList arrayList = new ArrayList();
         String arr[] ={"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
-        builder.setMultiChoiceItems(arr, null, new DialogInterface.OnMultiChoiceClickListener() {
-            /* renamed from: b */
-
-            public void onClick(DialogInterface dialogInterface, int i, boolean z) {
-                if (z) {
-                    arrayList.add(Integer.valueOf(i));
-                    return;
-                }
-                arrayList.remove(Integer.valueOf(i));
+        /* renamed from: b */
+        builder.setMultiChoiceItems(arr, null, (dialogInterface, i1, z) -> {
+            if (z) {
+                arrayList.add(Integer.valueOf(i1));
+                return;
             }
+            arrayList.remove(Integer.valueOf(i1));
         });
         final Reminder reminder_custom2 = reminder_custom;
         final Calendar calendar2 = calendar;
         final int i2 = i;
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (arrayList.size() > 0) {
-                    dialogInterface.dismiss();
-                    reminder_custom2.setTime(startTimeFormat().format(calendar2.getTime()));
-                    reminder_custom2.setMonday(false);
-                    reminder_custom2.setTuesday(false);
-                    reminder_custom2.setWednesday(false);
-                    reminder_custom2.setThurday(false);
-                    reminder_custom2.setFriday(false);
-                    reminder_custom2.setSaturday(false);
-                    reminder_custom2.setSunday(false);
-                    for (int i2 = 0; i2 < arrayList.size(); i2++) {
-                        if (arrayList.get(i2).equals(Integer.valueOf(1))) {
-                            reminder_custom2.setMonday(true);
-                        } else if (arrayList.get(i2).equals(Integer.valueOf(2))) {
-                            reminder_custom2.setTuesday(true);
-                        } else if (arrayList.get(i2).equals(Integer.valueOf(3))) {
-                            reminder_custom2.setWednesday(true);
-                        } else if (arrayList.get(i2).equals(Integer.valueOf(4))) {
-                            reminder_custom2.setThurday(true);
-                        } else if (arrayList.get(i2).equals(Integer.valueOf(5))) {
-                            reminder_custom2.setFriday(true);
-                        } else if (arrayList.get(i2).equals(Integer.valueOf(6))) {
-                            reminder_custom2.setSaturday(true);
-                        } else if (arrayList.get(i2).equals(Integer.valueOf(0))) {
-                            reminder_custom2.setSunday(true);
-                        }
+        builder.setPositiveButton("Yes", (dialogInterface, i12) -> {
+            if (arrayList.size() > 0) {
+                dialogInterface.dismiss();
+                reminder_custom2.setTime(startTimeFormat().format(calendar2.getTime()));
+                reminder_custom2.setMonday(false);
+                reminder_custom2.setTuesday(false);
+                reminder_custom2.setWednesday(false);
+                reminder_custom2.setThurday(false);
+                reminder_custom2.setFriday(false);
+                reminder_custom2.setSaturday(false);
+                reminder_custom2.setSunday(false);
+                for (int i21 = 0; i21 < arrayList.size(); i21++) {
+                    if (arrayList.get(i21).equals(Integer.valueOf(1))) {
+                        reminder_custom2.setMonday(true);
+                    } else if (arrayList.get(i21).equals(Integer.valueOf(2))) {
+                        reminder_custom2.setTuesday(true);
+                    } else if (arrayList.get(i21).equals(Integer.valueOf(3))) {
+                        reminder_custom2.setWednesday(true);
+                    } else if (arrayList.get(i21).equals(Integer.valueOf(4))) {
+                        reminder_custom2.setThurday(true);
+                    } else if (arrayList.get(i21).equals(Integer.valueOf(5))) {
+                        reminder_custom2.setFriday(true);
+                    } else if (arrayList.get(i21).equals(Integer.valueOf(6))) {
+                        reminder_custom2.setSaturday(true);
+                    } else if (arrayList.get(i21).equals(Integer.valueOf(0))) {
+                        reminder_custom2.setSunday(true);
                     }
-                    reminder_custom2.setOnTime(true);
-                    m4157a(alarmHelper, calendar2);
-                    String toJson = gson.toJson(productList);
-                    prefsEditor = mSharedPreferences.edit();
-                    prefsEditor.putString("Reminder_customObjectList", toJson);
-                    prefsEditor.apply();
-                    notifyItemChanged(i2);
-                    notifyItemRangeChanged(i2, productList.size());
-                    notifyDataSetChanged();
-                    return;
                 }
-                Toast.makeText(mCtx, "Please select at-least one day", 0).show();
+                reminder_custom2.setOnTime(true);
+                m4157a(alarmHelper, calendar2);
+                String toJson = gson.toJson(productList);
+                prefsEditor = mSharedPreferences.edit();
+                prefsEditor.putString("Reminder_customObjectList", toJson);
+                prefsEditor.apply();
+                notifyItemChanged(i2);
+                notifyItemRangeChanged(i2, productList.size());
+                notifyDataSetChanged();
+                return;
             }
+            Toast.makeText(mCtx, "Please select at-least one day", 0).show();
         });
         builder.setNegativeButton("No", new C10427(this));
         builder.create().show();

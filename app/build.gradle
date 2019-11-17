@@ -6,7 +6,7 @@ android {
         yogaapp {
             keyAlias 'key0'
             keyPassword 'yoga1234'
-            storeFile file('/home/nayan/Documents/Arham-App-Listing/yogakey.jks')
+            storeFile file('C:\\Users\\Vinamra\\Downloads\\yogakey.jks')
             storePassword 'yoga1234'
         }
     }
@@ -21,7 +21,7 @@ android {
         applicationId "net.yoga"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 11
+        versionCode 12
         versionName "1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

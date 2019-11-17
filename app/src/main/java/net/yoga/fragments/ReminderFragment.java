@@ -171,59 +171,53 @@ public class ReminderFragment extends Fragment {
         builder.setTitle("Days");
         String arr[] ={"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
         final ArrayList arrayList = new ArrayList();
-        builder.setMultiChoiceItems(arr, null, new DialogInterface.OnMultiChoiceClickListener() {
-
-            public void onClick(DialogInterface dialogInterface, int i, boolean z) {
-                if (z) {
-                    arrayList.add(Integer.valueOf(i));
-                    return;
-                }
-                arrayList.remove(Integer.valueOf(i));
+        builder.setMultiChoiceItems(arr, null, (dialogInterface, i, z) -> {
+            if (z) {
+                arrayList.add(Integer.valueOf(i));
+                return;
             }
+            arrayList.remove(Integer.valueOf(i));
         });
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            /* renamed from: c */
-
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (arrayList.size() > 0) {
-                    dialogInterface.dismiss();
-                    Reminder reminder_custom = new Reminder();
-                    reminder_custom.setTime(startTimeFormat().format(calendar.getTime()));
-                    for (i = 0; i < arrayList.size(); i++) {
-                        if (arrayList.get(i).equals(Integer.valueOf(1))) {
-                            reminder_custom.setMonday(true);
-                        } else if (arrayList.get(i).equals(Integer.valueOf(2))) {
-                            reminder_custom.setTuesday(true);
-                        } else if (arrayList.get(i).equals(Integer.valueOf(3))) {
-                            reminder_custom.setWednesday(true);
-                        } else if (arrayList.get(i).equals(Integer.valueOf(4))) {
-                            reminder_custom.setThurday(true);
-                        } else if (arrayList.get(i).equals(Integer.valueOf(5))) {
-                            reminder_custom.setFriday(true);
-                        } else if (arrayList.get(i).equals(Integer.valueOf(6))) {
-                            reminder_custom.setSaturday(true);
-                        } else if (arrayList.get(i).equals(Integer.valueOf(0))) {
-                            reminder_custom.setSunday(true);
-                        }
+        /* renamed from: c */
+        builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            if (arrayList.size() > 0) {
+                dialogInterface.dismiss();
+                Reminder reminder_custom = new Reminder();
+                reminder_custom.setTime(startTimeFormat().format(calendar.getTime()));
+                for (i = 0; i < arrayList.size(); i++) {
+                    if (arrayList.get(i).equals(Integer.valueOf(1))) {
+                        reminder_custom.setMonday(true);
+                    } else if (arrayList.get(i).equals(Integer.valueOf(2))) {
+                        reminder_custom.setTuesday(true);
+                    } else if (arrayList.get(i).equals(Integer.valueOf(3))) {
+                        reminder_custom.setWednesday(true);
+                    } else if (arrayList.get(i).equals(Integer.valueOf(4))) {
+                        reminder_custom.setThurday(true);
+                    } else if (arrayList.get(i).equals(Integer.valueOf(5))) {
+                        reminder_custom.setFriday(true);
+                    } else if (arrayList.get(i).equals(Integer.valueOf(6))) {
+                        reminder_custom.setSaturday(true);
+                    } else if (arrayList.get(i).equals(Integer.valueOf(0))) {
+                        reminder_custom.setSunday(true);
                     }
-                    m4641a(alarmHelper, calendar);
-                    reminder_custom.setOnTime(true);
-                    if (mReCu == null || mReCu.size() <= 0) {
-                        mReCu = new ArrayList();
-                    }
-                    mReCu.add(reminder_custom);
-                    String toJson = gson.toJson(mReCu);
-                    prefsEditor = mSharedPreferences.edit();
-                    prefsEditor.putString("Reminder_customObjectList", toJson);
-                    prefsEditor.apply();
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    mAdapter = new ReminderAdapter(getActivity(), mReCu, gson, mSharedPreferences, prefsEditor, alarmHelper);
-                    mRecyclerView.setAdapter(mAdapter);
-                    noreminders.setVisibility(View.GONE);
-                    return;
                 }
-                Toast.makeText(getActivity(), "Please select at-least one day", Toast.LENGTH_SHORT).show();
+                m4641a(alarmHelper, calendar);
+                reminder_custom.setOnTime(true);
+                if (mReCu == null || mReCu.size() <= 0) {
+                    mReCu = new ArrayList();
+                }
+                mReCu.add(reminder_custom);
+                String toJson = gson.toJson(mReCu);
+                prefsEditor = mSharedPreferences.edit();
+                prefsEditor.putString("Reminder_customObjectList", toJson);
+                prefsEditor.apply();
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mAdapter = new ReminderAdapter(getActivity(), mReCu, gson, mSharedPreferences, prefsEditor, alarmHelper);
+                mRecyclerView.setAdapter(mAdapter);
+                noreminders.setVisibility(View.GONE);
+                return;
             }
+            Toast.makeText(getActivity(), "Please select at-least one day", Toast.LENGTH_SHORT).show();
         });
         builder.setNegativeButton("No", new C10476(this));
         builder.create().show();

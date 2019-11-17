@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -72,24 +71,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //navigation drawer listener
         final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    User currentUser = documentSnapshot.toObject(User.class);
-                    userName = currentUser.getUserName();
-                    Log.d("username",userName);
-                    navHeadingName = navigationView.findViewById(R.id.navHeadingName);
-                    sessionCount = navigationView.findViewById(R.id.session_count);
-                    userName = Character.toUpperCase(userName.charAt(0))+userName.substring(1);
-                    navHeadingName.setText("Welcome \n"+userName);
-                    sessionCount.setText("Sessions completed : "+currentUser.getNoOfSessionsCompleted());
-                }
+        docRef.get().addOnSuccessListener(documentSnapshot -> {
+            if(documentSnapshot.exists()){
+                User currentUser = documentSnapshot.toObject(User.class);
+                userName = currentUser.getUserName();
+                Log.d("username",userName);
+                navHeadingName = navigationView.findViewById(R.id.navHeadingName);
+                sessionCount = navigationView.findViewById(R.id.session_count);
+                userName = Character.toUpperCase(userName.charAt(0))+userName.substring(1);
+                navHeadingName.setText("Welcome \n"+userName);
+                sessionCount.setText("Sessions completed : "+currentUser.getNoOfSessionsCompleted());
             }
         });
 
         /*Add in Oncreate() funtion after setContentView()*/
-        WebView webView = (WebView) findViewById(R.id.introWebView);
+        WebView webView = findViewById(R.id.introWebView);
         String path = "file:///android_asset/intro.html";
         webView.loadUrl(path);
     }
@@ -113,12 +109,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //    }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_specialSession:
                 Intent i3 = new Intent(getApplicationContext(),SpecialSessionActivity.class);
                 startActivity(i3);
                 finish();
+                break;
+
+            case R.id.feedback:
+                getFeedback();
                 break;
 
             case R.id.action_share:
@@ -152,6 +152,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         drawer.closeDrawer(GravityCompat.START);
         return false;
+    }
+
+    private void getFeedback() {
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto","app-feedback@arham.yoga", null));
+        intent.putExtra(Intent.EXTRA_SUBJECT, "FeedBack for Arham Yoga App");
+        intent.putExtra(Intent.EXTRA_TEXT, "Dear team\n");
+        startActivity(Intent.createChooser(intent, "Choose an Email client :"));
     }
 
     private void shareAction(){

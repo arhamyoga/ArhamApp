@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="23dp"
-            android:text=""
+            android:text="Welcome to"
             android:id="@+id/access"
             android:gravity="center"
             android:layout_marginTop="25dp"/>
@@ -24,8 +24,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Arham Dhyan Yoga"
-            android:textSize="23dp"
+            android:text="Arham Yoga &amp; Meditation"
+            android:textSize="30dp"
             android:id="@+id/engagingVideos"
             android:textStyle="bold"
             android:layout_below="@+id/access"
