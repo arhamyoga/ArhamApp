@@ -52,6 +52,7 @@
         android:layout_height="fill_parent">
 
         <android.support.v7.widget.RecyclerView
+            android:labelFor="@+id/reminderlist"
             android:id="@+id/reminderlist"
             android:background="@color/colorgrey"
             android:scrollbars="vertical"
@@ -63,12 +64,14 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:id="@+id/noreminder"
+            android:labelFor="@+id/noreminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Please set reminder" />
 
         <android.support.design.widget.FloatingActionButton
             android:layout_gravity="end|bottom|center"
+            android:labelFor="@+id/addreminder"
             android:id="@+id/addreminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

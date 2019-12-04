@@ -93,7 +93,7 @@ public class NotificationPublisher extends BroadcastReceiver {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, str);
             builder.setAutoCancel(true).setContentIntent(PendingIntent.getActivity(context, getNextNotifId(), intent2, 0))
                     .setDefaults(-1).setAutoCancel(true).setWhen(System.currentTimeMillis())
-                    .setSmallIcon(R.drawable.icon_notification).setContentTitle("Hey! it's Yoga time")
+                    .setSmallIcon(R.drawable.icon_notification).setContentTitle("Hey! it's Arham time")
                     .setContentText("Let's do some Arham Yoga").setDefaults(1);
             notificationManager2.notify(getNextNotifId(), builder.build());
             return;
@@ -144,7 +144,7 @@ public class NotificationPublisher extends BroadcastReceiver {
         Log.d(str, stringBuilder.toString());
         this.context = context;
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        List list = (List) new Gson().fromJson(this.sharedPreferences.getString("Reminder_customObjectList", null), new C15111(this).getType());
+        List list = new Gson().fromJson(this.sharedPreferences.getString("Reminder_customObjectList", null), new C15111(this).getType());
         Calendar instance = Calendar.getInstance();
         instance.get(Calendar.HOUR_OF_DAY);
         instance.get(Calendar.MINUTE);
@@ -194,7 +194,8 @@ public class NotificationPublisher extends BroadcastReceiver {
                             }
                         }
                     }
-                    this.alarmHelper.schedulePendingIntent(Integer.parseInt(((Reminder) list.get(i3)).getTime().substring(0, 2)), Integer.parseInt(((Reminder) list.get(i3)).getTime().substring(3, 5)), 0);
+                    Log.e("value of i3",""+i3);
+                    this.alarmHelper.schedulePendingIntent(Integer.parseInt(((Reminder) list.get(i3-1)).getTime().substring(0, 2)), Integer.parseInt(((Reminder) list.get(i3-1)).getTime().substring(3, 5)), 0);
                     i3++;
                 }
             }

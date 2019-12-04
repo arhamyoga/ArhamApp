@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.hbb20.CountryCodePicker;
 
 import net.yoga.R;
 
@@ -35,27 +37,25 @@ public class LoginActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     FirebaseFirestore db;
     int check;
+    CountryCodePicker ccp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        try {
-            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-            intent.setData(Uri.parse("package:net.yoga"));
-            startActivity(intent);
-
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+//            intent.setData(Uri.parse("package:net.yoga"));
+//            startActivity(intent);
+//
+//        } catch (ActivityNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
         int PERMISSION_ALL = 1;
         String[] PERMISSIONS = {
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                android.Manifest.permission.READ_SMS,
-                Manifest.permission.ACCESS_NETWORK_STATE
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
         };
 
         if(!hasPermissions(this, PERMISSIONS)){
@@ -66,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance(FirebaseApp.initializeApp(getApplicationContext()));
         progressDialog = new ProgressDialog(this);
         mobileNumber = findViewById(R.id.field_phone_number);
+        ccp = findViewById(R.id.ccp_picker);
+        ccp.registerCarrierNumberEditText(mobileNumber);
         proceed = findViewById(R.id.button_start_verification);
 
         //firestore initialization
@@ -77,8 +79,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //on click listeners
         proceed.setOnClickListener(v -> {
-            final String inputMobile = mobileNumber.getText().toString();
-            if(inputMobile.length()!=10){
+            if(!ccp.isValidFullNumber()){
                 mobileNumber.setError("Enter a valid mobile");
                 mobileNumber.requestFocus();
                 return;
@@ -87,15 +88,15 @@ public class LoginActivity extends AppCompatActivity {
                     progressDialog.setMessage("Please wait...");
                     progressDialog.setCancelable(false);
                     progressDialog.show();
-                    DocumentReference docRef = db.collection("users").document("+91" + inputMobile);
+                    DocumentReference docRef = db.collection("users").document(ccp.getFullNumberWithPlus()+"");
                     docRef.get().addOnSuccessListener(documentSnapshot -> {
                         Bundle bundle = new Bundle();
                         Log.d("LoginDoc", documentSnapshot.exists() + "");
                         if (documentSnapshot.exists()) {
                             bundle.putString("status", "login");
-                            bundle.putString("mobile", inputMobile);
+                            bundle.putString("mobile", ccp.getFullNumberWithPlus()+"");
                         } else {
-                            bundle.putString("mobile", inputMobile);
+                            bundle.putString("mobile", ccp.getFullNumberWithPlus()+"");
                             bundle.putString("status", "register");
                         }
                         Log.d("bundle", bundle.toString());
@@ -122,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
+    /*@Override
     public void onStart() {
         super.onStart();
         progressDialog.show();
@@ -160,5 +161,5 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             progressDialog.dismiss();
         }
-    }
+    }*/
 }

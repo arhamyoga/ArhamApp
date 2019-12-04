@@ -22,6 +22,8 @@
         android:text="@string/ready_to_go" />
 
     <net.yoga.utils.ArcProgress
+        android:contentDescription="Arham Progress"
+        android:labelFor="@+id/circleView"
         android:id="@+id/circleView"
         android:layout_below="@+id/headerText"
         android:layout_width="150dp"
@@ -32,6 +34,8 @@
         app:arc_bottom_text=""/>
 
     <VideoView
+        android:contentDescription="Arham Video"
+        android:labelFor="@+id/videoView"
         android:id="@+id/videoView"
         android:layout_below="@+id/circleView"
         android:layout_centerHorizontal="true"
@@ -40,6 +44,8 @@
         android:layout_height="match_parent"/>
 
     <ImageButton
+        android:contentDescription="Resume video"
+        android:labelFor="@+id/playView"
         android:id="@+id/playView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

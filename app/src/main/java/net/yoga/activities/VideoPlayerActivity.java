@@ -10,7 +10,8 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
 import net.yoga.R;
-import net.yoga.utils.Constants;
+
+import static net.yoga.utils.Constants.getYoutubeApiKey;
 
 public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
@@ -25,7 +26,7 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubeP
         Bundle bundle = getIntent().getExtras();
         url = bundle.getString("videoUrl");
         youTubeView = findViewById(R.id.youtube_view);
-        youTubeView.initialize(Constants.YOUTUBE_API_KEY, this);
+        youTubeView.initialize(getYoutubeApiKey(), this);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubeP
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RECOVERY_REQUEST) {
             // Retry initialization if user performed a recovery action
-            getYouTubePlayerProvider().initialize(Constants.YOUTUBE_API_KEY, this);
+            getYouTubePlayerProvider().initialize(getYoutubeApiKey(), this);
         }
     }
 

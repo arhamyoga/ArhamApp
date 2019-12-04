@@ -3,6 +3,7 @@ package net.yoga.fcm;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
@@ -32,7 +33,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     List<Notification> notificationList;
     Gson gson;
 
+    private void createNotificationChannel(Context context) {
+        if (VERSION.SDK_INT >= 26) {
+            NotificationChannel notificationChannel = new NotificationChannel("fcm_notification", "FCM Notification", 3);
+            notificationChannel.setDescription("Include all the notifications");
+            ((NotificationManager) context.getSystemService("notification")).createNotificationChannel(notificationChannel);
+        }
+    }
+
     private void sendNotification(String str, String str2, String str3, String str4) {
+        createNotificationChannel(getApplicationContext());
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(Constants.APP_PACKAGE_NAME, str);
         intent.putExtra(Constants.APP_BANNER_URL, str2);
@@ -64,6 +74,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         stringBuilder.append(remoteMessage.getFrom());
         Log.d(str, stringBuilder.toString());
         String str2 = null;
+        Log.d("FCM",remoteMessage.getData()+"");
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         gson = new Gson();
         notificationList = gson.fromJson(mSharedPreferences.getString("Notifications_customObjectList",null), new CustomType(this).getType());

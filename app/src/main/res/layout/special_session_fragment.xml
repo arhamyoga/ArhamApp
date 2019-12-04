@@ -55,10 +55,12 @@
             android:id="@+id/videos_list"
             android:background="@color/colorgrey"
             android:scrollbars="vertical"
+            android:labelFor="@+id/videos_list"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
 
         <ProgressBar
+            android:labelFor="@+id/no_videos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
         android:allowBackup="true"
@@ -71,24 +70,15 @@
 
         <activity
             android:name=".activities.YogaActivity"
-            android:screenOrientation="portrait" /> <!-- already included services -->
-        <!-- <service android:name=".utils.FBInstanceIDManager"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="com.google.firebase.INSTANCE_ID_EVENT" /> -->
-        <!-- </intent-filter> -->
-        <!-- </service> -->
-        <!-- <service android:name=".utils.FBMessagingManager"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
-        <!-- </intent-filter> -->
-        <!-- </service> -->
-        <!-- my services -->
+            android:screenOrientation="portrait" />
+
         <service
             android:name=".fcm.MyFirebaseMessagingService"
             android:enabled="true"
             android:exported="true">
-            <intent-filter>
+            <intent-filter android:priority="-500">
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name=".receiver.NOTIFY_ACTION" />
             </intent-filter>
         </service>
 

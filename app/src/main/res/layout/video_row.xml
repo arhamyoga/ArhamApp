@@ -1,30 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<LinearLayout-->
-    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:padding="10dp"-->
-    <!--android:layout_marginTop="10dp"-->
-    <!--android:orientation="vertical">-->
-
-
-    <!--<ImageView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/thumbnailView" />-->
-
-    <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textColor="#000"-->
-        <!--android:textSize="18dp"-->
-        <!--android:id="@+id/videoTitle"/>-->
-
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="10dp"/>-->
-
-<!--</LinearLayout>-->
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -41,6 +15,8 @@
 
         <TextView
             android:id="@+id/videoTitle"
+            android:contentDescription="Video Title"
+            android:labelFor="@+id/videoTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -57,11 +33,13 @@
             />
 
         <ImageView
+            android:contentDescription="Video Image"
             android:id="@+id/thumbnailView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:scaleType="matrix"
+            android:labelFor="@+id/thumbnailView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/videoTitle"

@@ -27,7 +27,6 @@ import net.yoga.R;
 import net.yoga.activities.MainActivity;
 import net.yoga.adapter.VideoListAdapter;
 import net.yoga.model.YoutubeVideo;
-import net.yoga.utils.Constants;
 import net.yoga.utils.RequestHandler;
 
 import org.json.JSONException;
@@ -36,6 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.yoga.utils.Constants.getYoutubeApiKey;
 import static net.yoga.utils.Utils.isOnline;
 
 public class SpecialSessionFragment extends Fragment implements YouTubeThumbnailView.OnInitializedListener,
@@ -49,6 +49,7 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
     String title = "";
     YoutubeVideo youtubeVideo;
     ProgressBar progressBar;
+    ArrayList<String> videoIds = new ArrayList<>();
     private static final String TAG = "SpecialSessionFragment";
 
     @Override
@@ -78,7 +79,7 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
         VideoList.setAdapter(adapter);
         if(isOnline(view.getContext())) {
             thumbnailView = new YouTubeThumbnailView(getContext());
-            thumbnailView.initialize(Constants.YOUTUBE_API_KEY, this);
+            thumbnailView.initialize(getYoutubeApiKey(), this);
             VideoList.setVisibility(View.VISIBLE);
         } else {
             Snackbar.make(view.findViewById(android.R.id.content),"Please connect to internet...",Snackbar.LENGTH_SHORT).show();
@@ -88,11 +89,14 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
 
     @Override
     public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
-        youtubeVideo = new YoutubeVideo();
-        new GetData().execute(s);
-        youtubeVideo.setImageDrawable(youTubeThumbnailView.getDrawable());
-        youtubeVideo.setVideoId(s);
-        Log.d("Videoid",s);
+        if(!videoIds.contains(s)) {
+            youtubeVideo = new YoutubeVideo();
+            youtubeVideo.setImageDrawable(youTubeThumbnailView.getDrawable());
+            youtubeVideo.setVideoId(s);
+            videoIds.add(s);
+            Log.d("Videoid", s);
+            new GetData().execute(s);
+        }
         if (thumbnailLoader.hasNext())
             thumbnailLoader.next();
 //        new Handler().postDelayed(this::add,15000);

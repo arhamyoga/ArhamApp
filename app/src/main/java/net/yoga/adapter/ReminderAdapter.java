@@ -136,7 +136,6 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Produc
         productViewHolder.thursday.setVisibility(View.VISIBLE);
         productViewHolder.friday.setVisibility(View.VISIBLE);
         productViewHolder.saturday.setVisibility(View.VISIBLE);
-        Log.d("Reminder adapter",this.reminderproduct.getMonday()+"");
         if (this.reminderproduct.getSunday()) {
             productViewHolder.sunday.setText("Sun");
         } else {
