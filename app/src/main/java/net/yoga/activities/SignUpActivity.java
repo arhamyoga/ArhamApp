@@ -80,7 +80,7 @@ public class SignUpActivity extends AppCompatActivity {
             String name = viewName.getText().toString();
             String referralCode = viewReferralCode.getText().toString();
             if(referralCode.length()!=0){
-                user.setJoinedReferralCode(referralCode);
+//                user.setJoinedReferralCode(referralCode);
             }
             if(city.length()!=0&&name.length()!=0&&state.length()!=0) {
                 user.setCity(city);

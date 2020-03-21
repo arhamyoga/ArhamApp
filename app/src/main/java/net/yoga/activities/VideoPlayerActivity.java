@@ -60,18 +60,12 @@
 package net.yoga.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
-import android.widget.Toast;
 
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
 
 import net.yoga.R;
 import net.yoga.utils.ExoPlayerManager;
@@ -79,8 +73,6 @@ import net.yoga.utils.ExoPlayerManager;
 import at.huber.youtubeExtractor.VideoMeta;
 import at.huber.youtubeExtractor.YouTubeExtractor;
 import at.huber.youtubeExtractor.YtFile;
-
-import static net.yoga.utils.Constants.getYoutubeApiKey;
 
 public class VideoPlayerActivity extends AppCompatActivity {
 
@@ -92,6 +84,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video_player);
         Bundle bundle = getIntent().getExtras();
         url = bundle.getString("videoUrl");
+        Log.d("videourl to play",url);
         extractYoutubeUrl();
     }
 
@@ -113,5 +106,15 @@ public class VideoPlayerActivity extends AppCompatActivity {
         PlayerView mPlayerView = findViewById(R.id.mPlayerView);
         mPlayerView.setPlayer(ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).getPlayerView().getPlayer());
         ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).playStream(downloadUrl);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        boolean isPlaying = ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).isPlayerPlaying();
+        Log.e("isPlaying",isPlaying+"");
+        ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).destroyPlayer();
+        isPlaying = ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).isPlayerPlaying();
+        Log.e("isPlaying",isPlaying+"");
     }
 }

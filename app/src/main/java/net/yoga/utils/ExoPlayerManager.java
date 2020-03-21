@@ -62,7 +62,7 @@ public class ExoPlayerManager {
 
         Uri mp4VideoUri = Uri.parse(uriString);
 
-        dataSourceFactory = new DefaultDataSourceFactory(mContext, Util.getUserAgent(mContext, "androidwave"), BANDWIDTH_METER);
+        dataSourceFactory = new DefaultDataSourceFactory(mContext, Util.getUserAgent(mContext, "arhamyoga"), BANDWIDTH_METER);
 
         final MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(mp4VideoUri);

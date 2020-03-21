@@ -1,5 +1,7 @@
 package net.yoga.model;
 
+import java.util.List;
+
 public class User {
 
     public String userName;
@@ -9,21 +11,16 @@ public class User {
     public String deviceId;
     public String fcmId;
     public String myReferralCode;
-    public String joinedReferralCode;
+    public List<Long> timestamps;
+    public List<String> joinedReferralCode;
+    public List<SpecialSessionVideo> specialSessionVideos;
 
     public User() {
     }
 
-    public User(String userName, String state, String city, Integer noOfSessionsCompleted, String deviceId, String fcmId) {
-        this.userName = userName;
-        this.state = state;
-        this.city = city;
-        this.noOfSessionsCompleted = noOfSessionsCompleted;
-        this.deviceId = deviceId;
-        this.fcmId = fcmId;
-    }
 
-    public User(String userName, String state, String city, Integer noOfSessionsCompleted, String deviceId, String fcmId, String myReferralCode, String joinedReferralCode) {
+    public User(String userName, String state, String city, Integer noOfSessionsCompleted, String deviceId, String fcmId,
+                String myReferralCode, List<Long> timestamps, List<String> joinedReferralCode, List<SpecialSessionVideo> specialSessionVideos) {
         this.userName = userName;
         this.state = state;
         this.city = city;
@@ -31,7 +28,9 @@ public class User {
         this.deviceId = deviceId;
         this.fcmId = fcmId;
         this.myReferralCode = myReferralCode;
+        this.timestamps = timestamps;
         this.joinedReferralCode = joinedReferralCode;
+        this.specialSessionVideos = specialSessionVideos;
     }
 
     public String getMyReferralCode() {
@@ -42,11 +41,11 @@ public class User {
         this.myReferralCode = myReferralCode;
     }
 
-    public String getJoinedReferralCode() {
+    public List<String> getJoinedReferralCode() {
         return joinedReferralCode;
     }
 
-    public void setJoinedReferralCode(String joinedReferralCode) {
+    public void setJoinedReferralCode(List<String> joinedReferralCode) {
         this.joinedReferralCode = joinedReferralCode;
     }
 
@@ -96,5 +95,21 @@ public class User {
 
     public void setFcmId(String fcmId) {
         this.fcmId = fcmId;
+    }
+
+    public List<SpecialSessionVideo> getSpecialSessionVideos() {
+        return specialSessionVideos;
+    }
+
+    public void setSpecialSessionVideos(List<SpecialSessionVideo> specialSessionVideos) {
+        this.specialSessionVideos = specialSessionVideos;
+    }
+
+    public List<Long> getTimestamps() {
+        return timestamps;
+    }
+
+    public void setTimestamps(List<Long> timestamps) {
+        this.timestamps = timestamps;
     }
 }
