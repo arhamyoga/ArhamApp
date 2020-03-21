@@ -6,10 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".activities.VideoPlayerActivity">
 
-    <com.google.android.youtube.player.YouTubePlayerView
-        android:labelFor="@+id/youtube_view"
-        android:id="@+id/youtube_view"
+    <!--<com.google.android.youtube.player.YouTubePlayerView-->
+        <!--android:labelFor="@+id/youtube_view"-->
+        <!--android:id="@+id/youtube_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"/>-->
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/mPlayerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:background="#A6000000"
+        app:controller_layout_id="@layout/exo_playback_control_view"
+        app:player_layout_id="@layout/exo_simple_player_view"
+        app:repeat_toggle_modes="none"
+        app:show_timeout="45000"
+        app:resize_mode="fixed_height"
+        app:surface_type="texture_view" />
 
 </RelativeLayout>

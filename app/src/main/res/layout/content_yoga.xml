@@ -33,15 +33,15 @@
         app:arc_progress="0"
         app:arc_bottom_text=""/>
 
-    <VideoView
-        android:contentDescription="Arham Video"
-        android:labelFor="@+id/videoView"
-        android:id="@+id/videoView"
-        android:layout_below="@+id/circleView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <!--<VideoView-->
+        <!--android:contentDescription="Arham Video"-->
+        <!--android:labelFor="@+id/videoView"-->
+        <!--android:id="@+id/videoView"-->
+        <!--android:layout_below="@+id/circleView"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="30dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
 
     <ImageButton
         android:contentDescription="Resume video"
@@ -58,6 +58,18 @@
         android:layout_alignRight="@+id/circleView"
         android:layout_alignEnd="@+id/circleView"
         android:layout_above="@+id/videoView" />
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:contentDescription="Arham Video"
+        android:labelFor="@+id/videoView"
+        android:id="@+id/videoView"
+        android:layout_below="@+id/circleView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.google.android.exoplayer2.ui.PlayerView>
 
 
 </RelativeLayout>

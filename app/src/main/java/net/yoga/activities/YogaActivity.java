@@ -1,5 +1,6 @@
 package net.yoga.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,12 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,10 +35,15 @@ public class YogaActivity extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseAuth mAuth;
 
-    private VideoView videoView;
+//    private VideoView videoView;
     private ImageButton playButton;
     private ArcProgress progressView;
     SessionManager session;
+
+    //ExoPlayer
+    PlayerView videoView;
+    ExoPlayer exoPlayer;
+    Context context;
 
     private int video_time = 12*60+4;
     private int currentTime = 0;
@@ -77,6 +89,10 @@ public class YogaActivity extends AppCompatActivity {
         }
     };
 
+    private void initPlayer(){
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(context),new DefaultTrackSelector(),new DefaultLoadControl());
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,10 +101,10 @@ public class YogaActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_yoga);
         videoView = findViewById(R.id.videoView);
-        videoView.setOnErrorListener((mp, what, extra) -> {
-            Log.d("video", "setOnErrorListener ");
-            return true;
-        });
+//        videoView.setOnErrorListener((mp, what, extra) -> {
+//            Log.d("video", "setOnErrorListener ");
+//            return true;
+//        });
         session = new SessionManager(getApplicationContext());
         Log.d("onCreate Stop",""+stopPosition);
         db = FirebaseFirestore.getInstance();
@@ -96,8 +112,8 @@ public class YogaActivity extends AppCompatActivity {
                 .setTimestampsInSnapshotsEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
-        videoView.seekTo(stopPosition);
-        videoView.start();
+//        videoView.seekTo(stopPosition);
+//        videoView.start();
         mAuth = FirebaseAuth.getInstance();
         mobileUser = mAuth.getCurrentUser().getPhoneNumber();
         progressView = findViewById(R.id.circleView);
@@ -108,7 +124,7 @@ public class YogaActivity extends AppCompatActivity {
 
         progressView.setOnClickListener(view -> {
             isPlaying = false;
-            videoView.pause();
+//            videoView.pause();
             progressView.setVisibility(View.INVISIBLE);
             playButton.setVisibility(View.VISIBLE);
         });
@@ -117,7 +133,7 @@ public class YogaActivity extends AppCompatActivity {
             isPlaying = true;
             playButton.setVisibility(View.GONE);
             progressView.setVisibility(View.VISIBLE);
-            videoView.start();
+//            videoView.start();
             if (currentTime == 0) {
                 restartVideoPlay();
             }
@@ -126,8 +142,8 @@ public class YogaActivity extends AppCompatActivity {
     private void restartVideoPlay() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         String path = "android.resource://" + getPackageName() + "/" + R.raw.yoga;
-        videoView.setVideoURI(Uri.parse(path));
-        videoView.start();
+//        videoView.setVideoURI(Uri.parse(path));
+//        videoView.start();
         isPlaying = true;
         progressView.setMax(video_time);
         currentTime = video_time;
@@ -146,17 +162,17 @@ public class YogaActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.d("onResume Stop",""+stopPosition);
-        videoView.seekTo(stopPosition);
+//        videoView.seekTo(stopPosition);
         isPlaying = true;
-        videoView.resume(); //Or use resume() if it doesn't work. I'm not sure
+//        videoView.resume(); //Or use resume() if it doesn't work. I'm not sure
     }
 
     // This gets called before onPause so pause video here.
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        stopPosition = videoView.getCurrentPosition();
-        videoView.pause();
+//        stopPosition = videoView.getCurrentPosition();
+//        videoView.pause();
         isPlaying = false;
         Log.d("onSaveInstance Stop",""+stopPosition);
         outState.putInt("position", stopPosition);
@@ -175,8 +191,8 @@ public class YogaActivity extends AppCompatActivity {
         super.onPause();
         if(isPlaying){
             isPlaying = false;
-            videoView.pause();
-            stopPosition = videoView.getCurrentPosition();
+//            videoView.pause();
+//            stopPosition = videoView.getCurrentPosition();
             Log.e("Progress paused", "" + stopPosition);
         }
     }

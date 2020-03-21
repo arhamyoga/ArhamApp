@@ -44,18 +44,20 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        try {
-//            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-//            intent.setData(Uri.parse("package:net.yoga"));
-//            startActivity(intent);
-//
-//        } catch (ActivityNotFoundException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:net.yoga"));
+            startActivity(intent);
+
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
 
         int PERMISSION_ALL = 1;
         String[] PERMISSIONS = {
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
         };
 
         if(!hasPermissions(this, PERMISSIONS)){
