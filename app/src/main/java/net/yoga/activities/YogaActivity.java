@@ -285,9 +285,9 @@ public class YogaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if( savedInstanceState != null ) {
-            stopPosition = savedInstanceState.getInt("position");
-        }
+//        if( savedInstanceState != null ) {
+//            stopPosition = savedInstanceState.getInt("position");
+//        }
         setContentView(R.layout.activity_yoga);
         videoView = findViewById(R.id.videoView);
         videoView.setOnErrorListener((mp, what, extra) -> {
@@ -309,9 +309,9 @@ public class YogaActivity extends AppCompatActivity {
         progressView = findViewById(R.id.circleView);
         playButton = findViewById(R.id.playView);
 
-        if(stopPosition==0){
-            restartVideoPlay();
-        }
+//        if(stopPosition==0){
+//            restartVideoPlay();
+//        }
 
         progressView.setOnClickListener(view -> {
             isPlaying = false;
@@ -352,15 +352,15 @@ public class YogaActivity extends AppCompatActivity {
     }
 
     // This gets called before onPause so pause video here.
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        stopPosition = videoView.getCurrentPosition();
-//        videoView.pause();
-        isPlaying = false;
-        Log.d("onSaveInstance Stop",""+stopPosition);
-        outState.putInt("position", stopPosition);
-    }
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+////        stopPosition = videoView.getCurrentPosition();
+////        videoView.pause();
+//        isPlaying = false;
+//        Log.d("onSaveInstance Stop",""+stopPosition);
+//        outState.putInt("position", stopPosition);
+//    }
 
     @Override
     public void onBackPressed() {
@@ -370,14 +370,14 @@ public class YogaActivity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if(isPlaying){
-            isPlaying = false;
-//            videoView.pause();
-//            stopPosition = videoView.getCurrentPosition();
-            Log.e("Progress paused", "" + stopPosition);
-        }
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        if(isPlaying){
+//            isPlaying = false;
+////            videoView.pause();
+////            stopPosition = videoView.getCurrentPosition();
+//            Log.e("Progress paused", "" + stopPosition);
+//        }
+//    }
 }
