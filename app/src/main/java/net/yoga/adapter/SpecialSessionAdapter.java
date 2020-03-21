@@ -13,37 +13,37 @@ import android.widget.TextView;
 
 import net.yoga.R;
 import net.yoga.activities.VideoPlayerActivity;
-import net.yoga.model.YoutubeVideo;
+import net.yoga.model.SpecialSessionVideo;
 
 import java.util.List;
 
-public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyView> {
+public class SpecialSessionAdapter extends RecyclerView.Adapter<SpecialSessionAdapter.MyView> {
 
     private Context context;
-    private List<YoutubeVideo> youtubeVideos;
+    private List<SpecialSessionVideo> specialSessionVideos;
 
-    public VideoListAdapter(Context context, List<YoutubeVideo> youtubeVideos) {
+    public SpecialSessionAdapter(Context context, List<SpecialSessionVideo> specialSessionVideos) {
         this.context = context;
-        this.youtubeVideos = youtubeVideos;
+        this.specialSessionVideos = specialSessionVideos;
     }
 
     @NonNull
     @Override
     public MyView onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View itemView = LayoutInflater.from(this.context).inflate(R.layout.video_row, parent, false);
-        return new VideoListAdapter.MyView(itemView);
+        return new SpecialSessionAdapter.MyView(itemView);
     }
 
     @Override
-    public void onBindViewHolder(VideoListAdapter.MyView holder, int position) {
+    public void onBindViewHolder(SpecialSessionAdapter.MyView holder, int position) {
 
-        YoutubeVideo youtubeVideo = youtubeVideos.get(position);
-        holder.imageView.setImageDrawable(youtubeVideo.getImageDrawable());
-        holder.titleView.setText(youtubeVideo.getTitle());
+        SpecialSessionVideo specialSessionVideo = specialSessionVideos.get(position);
+        holder.imageView.setImageDrawable(specialSessionVideo.getImageDrawable());
+        holder.titleView.setText(specialSessionVideo.getTitle());
         holder.imageView.setOnClickListener(v -> {
             Intent intent = new Intent(context, VideoPlayerActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("videoUrl",youtubeVideo.getVideoId());
+            bundle.putString("videoUrl", specialSessionVideo.getVideoId());
             intent.putExtras(bundle);
             context.startActivity(intent);
         });
@@ -51,7 +51,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return youtubeVideos.size();
+        return specialSessionVideos.size();
     }
 
     public class MyView extends RecyclerView.ViewHolder{

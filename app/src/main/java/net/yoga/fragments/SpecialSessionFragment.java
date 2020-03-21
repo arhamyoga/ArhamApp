@@ -25,9 +25,8 @@ import com.google.android.youtube.player.YouTubeThumbnailView;
 
 import net.yoga.R;
 import net.yoga.activities.MainActivity;
-import net.yoga.adapter.VideoListAdapter;
-import net.yoga.model.YoutubeVideo;
-import net.yoga.utils.Constants;
+import net.yoga.adapter.SpecialSessionAdapter;
+import net.yoga.model.SpecialSessionVideo;
 import net.yoga.utils.RequestHandler;
 
 import org.json.JSONException;
@@ -36,6 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.yoga.utils.Constants.getYoutubeApiKey;
 import static net.yoga.utils.Utils.isOnline;
 
 public class SpecialSessionFragment extends Fragment implements YouTubeThumbnailView.OnInitializedListener,
@@ -44,11 +44,12 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
     YouTubeThumbnailView thumbnailView;
     YouTubeThumbnailLoader thumbnailLoader;
     RecyclerView VideoList;
-    VideoListAdapter adapter;
-    List<YoutubeVideo> youtubeVideos;
+    SpecialSessionAdapter adapter;
+    List<SpecialSessionVideo> specialSessionVideos;
     String title = "";
-    YoutubeVideo youtubeVideo;
+    SpecialSessionVideo specialSessionVideo;
     ProgressBar progressBar;
+    ArrayList<String> videoIds = new ArrayList<>();
     private static final String TAG = "SpecialSessionFragment";
 
     @Override
@@ -70,15 +71,15 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
         toolbar.getNavigationIcon().mutate().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_IN);
         setHasOptionsMenu(true);
         VideoList = view.findViewById(R.id.videos_list);
-        youtubeVideos = new ArrayList<>();
+        specialSessionVideos = new ArrayList<>();
         progressBar = view.findViewById(R.id.no_videos);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getContext());
         VideoList.setLayoutManager(layoutManager);
-        adapter=new VideoListAdapter(view.getContext(),youtubeVideos);
+        adapter=new SpecialSessionAdapter(view.getContext(), specialSessionVideos);
         VideoList.setAdapter(adapter);
         if(isOnline(view.getContext())) {
             thumbnailView = new YouTubeThumbnailView(getContext());
-            thumbnailView.initialize(Constants.YOUTUBE_API_KEY, this);
+            thumbnailView.initialize(getYoutubeApiKey(), this);
             VideoList.setVisibility(View.VISIBLE);
         } else {
             Snackbar.make(view.findViewById(android.R.id.content),"Please connect to internet...",Snackbar.LENGTH_SHORT).show();
@@ -88,11 +89,14 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
 
     @Override
     public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
-        youtubeVideo = new YoutubeVideo();
-        new GetData().execute(s);
-        youtubeVideo.setImageDrawable(youTubeThumbnailView.getDrawable());
-        youtubeVideo.setVideoId(s);
-        Log.d("Videoid",s);
+        if(!videoIds.contains(s)) {
+            specialSessionVideo = new SpecialSessionVideo();
+            specialSessionVideo.setImageDrawable(youTubeThumbnailView.getDrawable());
+            specialSessionVideo.setVideoId(s);
+            videoIds.add(s);
+            Log.d("Videoid", s);
+            new GetData().execute(s);
+        }
         if (thumbnailLoader.hasNext())
             thumbnailLoader.next();
 //        new Handler().postDelayed(this::add,15000);
@@ -138,9 +142,9 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
                 progressBar.setVisibility(View.GONE);
                 JSONObject jsonObject = new JSONObject(s);
                 title = jsonObject.getString("title");
-                youtubeVideo.setTitle(title);
-                youtubeVideo.setImageUrl(jsonObject.getString("thumbnail_url"));
-                youtubeVideos.add(youtubeVideo);
+                specialSessionVideo.setTitle(title);
+                specialSessionVideo.setImageUrl(jsonObject.getString("thumbnail_url"));
+                specialSessionVideos.add(specialSessionVideo);
                 adapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -8,6 +8,8 @@ public class User {
     public Integer noOfSessionsCompleted;
     public String deviceId;
     public String fcmId;
+    public String myReferralCode;
+    public String joinedReferralCode;
 
     public User() {
     }
@@ -19,6 +21,33 @@ public class User {
         this.noOfSessionsCompleted = noOfSessionsCompleted;
         this.deviceId = deviceId;
         this.fcmId = fcmId;
+    }
+
+    public User(String userName, String state, String city, Integer noOfSessionsCompleted, String deviceId, String fcmId, String myReferralCode, String joinedReferralCode) {
+        this.userName = userName;
+        this.state = state;
+        this.city = city;
+        this.noOfSessionsCompleted = noOfSessionsCompleted;
+        this.deviceId = deviceId;
+        this.fcmId = fcmId;
+        this.myReferralCode = myReferralCode;
+        this.joinedReferralCode = joinedReferralCode;
+    }
+
+    public String getMyReferralCode() {
+        return myReferralCode;
+    }
+
+    public void setMyReferralCode(String myReferralCode) {
+        this.myReferralCode = myReferralCode;
+    }
+
+    public String getJoinedReferralCode() {
+        return joinedReferralCode;
+    }
+
+    public void setJoinedReferralCode(String joinedReferralCode) {
+        this.joinedReferralCode = joinedReferralCode;
     }
 
     public String getUserName() {

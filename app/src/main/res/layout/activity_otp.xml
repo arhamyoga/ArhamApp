@@ -44,6 +44,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginHorizontal="30dp"
                 android:layout_below="@+id/mobileNumber"
                 android:layout_marginTop="5dp">
@@ -57,7 +58,7 @@
                     android:gravity="start"
                     android:hint="Mobile Number"
                     android:maxLength="10"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     android:inputType="phone"
                     android:textAlignment="viewStart"
                     android:textColor="#000"

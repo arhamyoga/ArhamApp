@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/ic_bcg_new"
     android:orientation="vertical"
     tools:context=".activities.LoginActivity">
@@ -40,29 +41,66 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mobile Number"
+                android:textSize="15sp"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_below="@+id/mobileNumber"
-                android:layout_marginTop="5dp">
+                android:gravity="center_vertical">
 
-                <android.support.design.widget.TextInputEditText
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/ccp_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <EditText
                     android:id="@+id/field_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
+                    android:hint="Number"
                     android:fontFamily="sans-serif"
-                    android:gravity="start"
-                    android:hint="Mobile Number"
-                    android:maxLength="10"
                     android:inputType="phone"
                     android:textAlignment="viewStart"
                     android:textColor="#000"
-                    android:textColorHint="#000000"
-                    android:textSize="15dp" />
+                    android:textSize="15dp"
+                    android:singleLine="true" />
+            </LinearLayout>
 
-            </android.support.design.widget.TextInputLayout>
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<android.support.design.widget.TextInputLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginHorizontal="30dp"-->
+                    <!--android:layout_below="@+id/mobileNumber"-->
+                    <!--android:layout_marginTop="5dp">-->
+
+                    <!--<android.support.design.widget.TextInputEditText-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_margin="2dp"-->
+                        <!--android:fontFamily="sans-serif"-->
+                        <!--android:gravity="start"-->
+                        <!--android:maxLength="10"-->
+                        <!--android:inputType="phone"-->
+                        <!--android:textAlignment="viewStart"-->
+                        <!--android:textColor="#000"-->
+                        <!--android:textColorHint="#000000"-->
+                        <!--android:textSize="15dp" />-->
+
+                <!--</android.support.design.widget.TextInputLayout>-->
+
+            <!--</LinearLayout>-->
+
 
 
 

@@ -43,7 +43,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 134217728)).setSmallIcon(R.drawable.icon_notification).setContentTitle("Arham time")
                         .setContentText("Arham Dhyan")
                         .setStyle(new BigPictureStyle()
-                                .bigPicture(decodeResource).setBigContentTitle("Let's start yoga")
+                                .bigPicture(decodeResource).setBigContentTitle("Let's start Arham")
                                 .setSummaryText("Arham Brings mental peace")).setAutoCancel(true).build());
     }
 }

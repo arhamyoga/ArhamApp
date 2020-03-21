@@ -18,15 +18,14 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import net.yoga.R;
 import net.yoga.model.User;
+import net.yoga.sharedpref.SessionManager;
 
 import static net.yoga.utils.Utils.isOnline;
 
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawer=null;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor prefsEditor;
-
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build();
         db.setFirestoreSettings(settings);
 
+        session = new SessionManager(getApplicationContext());
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext().getApplicationContext());
         prefsEditor = mSharedPreferences.edit();
 
@@ -79,35 +79,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 navHeadingName = navigationView.findViewById(R.id.navHeadingName);
                 sessionCount = navigationView.findViewById(R.id.session_count);
                 userName = Character.toUpperCase(userName.charAt(0))+userName.substring(1);
-                navHeadingName.setText("Welcome \n"+userName);
-                sessionCount.setText("Sessions completed : "+currentUser.getNoOfSessionsCompleted());
+                session.createSession(userName,currentUser.getNoOfSessionsCompleted());
+                if(navHeadingName!=null&&sessionCount!=null) {
+                    navHeadingName.setText("Welcome \n" + session.getUsername());
+                    sessionCount.setText("Sessions completed : " + session.getArhamSessions());
+                }
+            }
+        }).addOnFailureListener(e -> {
+            navHeadingName = navigationView.findViewById(R.id.navHeadingName);
+            sessionCount = navigationView.findViewById(R.id.session_count);
+            if(navHeadingName!=null&sessionCount!=null) {
+                navHeadingName.setText("Welcome \n" + session.getUsername());
+                sessionCount.setText("Sessions completed : " + session.getArhamSessions());
             }
         });
+        if(isOnline(getApplicationContext())&&session.isLoggedIn()){
+            docRef.update("noOfSessionsCompleted",session.getArhamSessions()).addOnSuccessListener(aVoid -> Log.d("Arham Session","Completed"));
+        }
+        if(sessionCount!=null)
+        sessionCount.setText("Sessions completed : " + session.getArhamSessions());
 
         /*Add in Oncreate() funtion after setContentView()*/
         WebView webView = findViewById(R.id.introWebView);
         String path = "file:///android_asset/intro.html";
         webView.loadUrl(path);
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.activity_home_drawer, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//
-//        switch (item.getItemId()) {
-//            case R.id.action_share:
-//                Log.d("Main Activity","Share Action");
-//                shareAction();
-//                return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -143,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     FirebaseAuth.getInstance().signOut();
                     prefsEditor.clear();
                     prefsEditor.apply();
+                    session.logoutUser();
                     Intent intent = new Intent(getApplicationContext(), Splash.class);
                     startActivity(intent);
                     finish();
@@ -156,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void getFeedback() {
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto","app-feedback@arham.yoga", null));
+                "mailto","mobile@arham.yoga", null));
         intent.putExtra(Intent.EXTRA_SUBJECT, "FeedBack for Arham Yoga App");
         intent.putExtra(Intent.EXTRA_TEXT, "Dear team\n");
         startActivity(Intent.createChooser(intent, "Choose an Email client :"));
@@ -186,5 +183,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void openYoga(View view) {
         Intent intent = new Intent(this, YogaActivity.class);
         startActivity(intent);
+        finish();
     }
 }

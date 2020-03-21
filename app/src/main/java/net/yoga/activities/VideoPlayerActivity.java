@@ -1,21 +1,89 @@
+//package net.yoga.activities;
+//
+//import android.content.Intent;
+//import android.os.Bundle;
+//import android.widget.Toast;
+//
+//import com.google.android.youtube.player.YouTubeBaseActivity;
+//import com.google.android.youtube.player.YouTubeInitializationResult;
+//import com.google.android.youtube.player.YouTubePlayer;
+//import com.google.android.youtube.player.YouTubePlayerView;
+//
+//import net.yoga.R;
+//
+//import static net.yoga.utils.Constants.getYoutubeApiKey;
+//
+//public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
+//
+//    private static final int RECOVERY_REQUEST = 1;
+//    private YouTubePlayerView youTubeView;
+//    String url;
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_video_player);
+//        Bundle bundle = getIntent().getExtras();
+//        url = bundle.getString("videoUrl");
+//        youTubeView = findViewById(R.id.youtube_view);
+//        youTubeView.initialize(getYoutubeApiKey(), this);
+//    }
+//
+//    @Override
+//    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+//        if (!b) {
+//            youTubePlayer.loadVideo(url); // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
+//        }
+//    }
+//
+//    @Override
+//    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
+//        if (errorReason.isUserRecoverableError()) {
+//            errorReason.getErrorDialog(this, RECOVERY_REQUEST).show();
+//        } else {
+//            String error = "Error initializing YouTube player: "+ errorReason.toString();
+//            Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+//        }
+//    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == RECOVERY_REQUEST) {
+//            // Retry initialization if user performed a recovery action
+//            getYouTubePlayerProvider().initialize(getYoutubeApiKey(), this);
+//        }
+//    }
+//
+//    protected YouTubePlayer.Provider getYouTubePlayerProvider() {
+//        return youTubeView;
+//    }
+//}
 package net.yoga.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.util.SparseArray;
 import android.widget.Toast;
 
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
 import net.yoga.R;
-import net.yoga.utils.Constants;
+import net.yoga.utils.ExoPlayerManager;
 
-public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
+import at.huber.youtubeExtractor.VideoMeta;
+import at.huber.youtubeExtractor.YouTubeExtractor;
+import at.huber.youtubeExtractor.YtFile;
 
-    private static final int RECOVERY_REQUEST = 1;
-    private YouTubePlayerView youTubeView;
+import static net.yoga.utils.Constants.getYoutubeApiKey;
+
+public class VideoPlayerActivity extends AppCompatActivity {
+
     String url;
 
     @Override
@@ -24,35 +92,26 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubeP
         setContentView(R.layout.activity_video_player);
         Bundle bundle = getIntent().getExtras();
         url = bundle.getString("videoUrl");
-        youTubeView = findViewById(R.id.youtube_view);
-        youTubeView.initialize(Constants.YOUTUBE_API_KEY, this);
+        extractYoutubeUrl();
     }
 
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-        if (!b) {
-            youTubePlayer.loadVideo(url); // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
-        }
+    private void extractYoutubeUrl() {
+        @SuppressLint("StaticFieldLeak") YouTubeExtractor mExtractor = new YouTubeExtractor(this) {
+            @Override
+            protected void onExtractionComplete(SparseArray<YtFile> sparseArray, VideoMeta videoMeta) {
+                Log.d("videoMeta",videoMeta.toString());
+                if (sparseArray != null) {
+                    Log.e("err",sparseArray.toString());
+                    playVideo(sparseArray.get(22).getUrl());
+                }
+            }
+        };
+        mExtractor.extract(url, true, true);
     }
 
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
-        if (errorReason.isUserRecoverableError()) {
-            errorReason.getErrorDialog(this, RECOVERY_REQUEST).show();
-        } else {
-            String error = "Error initializing YouTube player: "+ errorReason.toString();
-            Toast.makeText(this, error, Toast.LENGTH_LONG).show();
-        }
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RECOVERY_REQUEST) {
-            // Retry initialization if user performed a recovery action
-            getYouTubePlayerProvider().initialize(Constants.YOUTUBE_API_KEY, this);
-        }
-    }
-
-    protected YouTubePlayer.Provider getYouTubePlayerProvider() {
-        return youTubeView;
+    private void playVideo(String downloadUrl) {
+        PlayerView mPlayerView = findViewById(R.id.mPlayerView);
+        mPlayerView.setPlayer(ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).getPlayerView().getPlayer());
+        ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).playStream(downloadUrl);
     }
 }
