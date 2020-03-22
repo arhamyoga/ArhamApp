@@ -171,7 +171,7 @@ public class OTPActivity extends AppCompatActivity {
                         //verification successful we will start the profile activity
                         if(status.equals("login")) {
                             String mobileUser = firebaseAuth.getCurrentUser().getPhoneNumber();
-                            final DocumentReference docRef = db.collection("users").document(mobileUser);
+                            final DocumentReference docRef = db.collection("users1").document(mobileUser);
                             docRef.get().addOnSuccessListener(documentSnapshot -> {
                                 if(documentSnapshot.exists()){
                                     docRef.update("fcmId",token).addOnSuccessListener(aVoid -> {

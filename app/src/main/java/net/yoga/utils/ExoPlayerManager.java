@@ -24,13 +24,20 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import net.yoga.interfaces.CallBacks;
+import net.yoga.model.SpecialSessionVideo;
+import net.yoga.model.User;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExoPlayerManager {
 
@@ -44,6 +51,11 @@ public class ExoPlayerManager {
     Integer playlistIndex = 0;
     CallBacks.playerCallBack listner;
     private SimpleExoPlayer mPlayer;
+
+    FirebaseAuth mAuth;
+    FirebaseFirestore db;
+
+    String mobileUser="",videoUrl="";
 
     /**
      * private constructor
@@ -92,7 +104,7 @@ public class ExoPlayerManager {
 
                     playlistIndex++;
                     listner.onItemClickOnItem(playlistIndex);
-                    playStream(mPlayList.get(playlistIndex));
+                    playStream(mPlayList.get(playlistIndex),videoUrl);
                 } else if (playbackState == 4 && mPlayList != null && playlistIndex + 1 == mPlayList.size()) {
                     mPlayer.setPlayWhenReady(false);
                 }
@@ -101,6 +113,36 @@ public class ExoPlayerManager {
                 }
                 if(playbackState==4 && listner==null){
                     Log.e("video","ended");
+                    db = FirebaseFirestore.getInstance();
+                    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                            .setTimestampsInSnapshotsEnabled(true)
+                            .build();
+                    db.setFirestoreSettings(settings);
+                    mAuth = FirebaseAuth.getInstance();
+                    mobileUser = mAuth.getCurrentUser().getPhoneNumber();
+                    final DocumentReference docRef = db.collection("users1").document(mobileUser);
+                    docRef.get().addOnSuccessListener(documentSnapshot -> {
+                       if(documentSnapshot.exists()) {
+                           User user = documentSnapshot.toObject(User.class);
+                           List<SpecialSessionVideo> specialSessionVideos = user.getSpecialSessionVideos();
+                           if(specialSessionVideos==null){
+                               specialSessionVideos = new ArrayList<>();
+                               Log.e("err","yes");
+                           }
+                           SpecialSessionVideo specialSessionVideo = new SpecialSessionVideo();
+                           specialSessionVideo.setVideoId(videoUrl);
+                           specialSessionVideo.setCount(1);
+                           specialSessionVideo.setWatched(true);
+                           specialSessionVideos.add(specialSessionVideo);
+
+                           Log.d("arr",specialSessionVideos.get(0).getVideoId()+"");
+                           try {
+                               docRef.update("specialSessionVideos", specialSessionVideos);
+                           } catch (IllegalArgumentException e){
+                               e.printStackTrace();
+                           }
+                       }
+                    });
                 }
             }
 
@@ -157,8 +199,9 @@ public class ExoPlayerManager {
         return mPlayerView;
     }
 
-    public void playStream(String urlToPlay) {
+    public void playStream(String urlToPlay,String url) {
         uriString = urlToPlay;
+        videoUrl = url;
         Uri mp4VideoUri = Uri.parse(uriString);
         MediaSource videoSource;
         String filenameArray[] = urlToPlay.split("\\.");
@@ -189,7 +232,7 @@ public class ExoPlayerManager {
         mPlayList = uriArrayList;
         playlistIndex = index;
         listner = callBack;
-        playStream(mPlayList.get(playlistIndex));
+        playStream(mPlayList.get(playlistIndex),videoUrl);
     }
 
 

@@ -3,13 +3,13 @@ package net.yoga.model;
 import android.graphics.drawable.Drawable;
 
 public class SpecialSessionVideo {
-    private String title;
-    private Long id;
-    private String videoId;
-    private String imageUrl;
-    private Drawable imageDrawable;
-    private boolean isWatched;
-    private Integer count;
+    public String title;
+    public Long id;
+    public String videoId;
+    public String imageUrl;
+    public Drawable imageDrawable;
+    public boolean isWatched;
+    public Integer count;
 
     public SpecialSessionVideo() {
     }

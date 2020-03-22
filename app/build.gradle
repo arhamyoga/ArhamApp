@@ -47,6 +47,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.0.1'
     implementation 'com.google.firebase:firebase-storage:16.0.1'
     implementation 'com.google.firebase:firebase-firestore:16.0.0'
+//    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+//    implementation 'com.google.firebase:firebase-core:17.2.3'
+//    implementation 'com.google.firebase:firebase-auth:19.0.0'
+//    implementation 'com.google.firebase:firebase-storage:19.0.0'
+//    implementation 'com.google.firebase:firebase-firestore:21.0.0'
 
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'android.arch.lifecycle:extensions:1.1.1'

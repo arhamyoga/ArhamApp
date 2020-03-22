@@ -64,6 +64,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.WindowManager;
 
 import com.google.android.exoplayer2.ui.PlayerView;
 
@@ -85,6 +86,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         url = bundle.getString("videoUrl");
         Log.d("videourl to play",url);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         extractYoutubeUrl();
     }
 
@@ -103,9 +105,10 @@ public class VideoPlayerActivity extends AppCompatActivity {
     }
 
     private void playVideo(String downloadUrl) {
+        Log.d("download url",downloadUrl);
         PlayerView mPlayerView = findViewById(R.id.mPlayerView);
         mPlayerView.setPlayer(ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).getPlayerView().getPlayer());
-        ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).playStream(downloadUrl);
+        ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).playStream(downloadUrl,url);
     }
 
     @Override
