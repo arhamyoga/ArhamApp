@@ -1,6 +1,7 @@
 package net.yoga.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
@@ -29,6 +30,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
+import net.yoga.activities.SpecialSessionActivity;
 import net.yoga.interfaces.CallBacks;
 import net.yoga.model.SpecialSessionVideo;
 import net.yoga.model.User;
@@ -137,7 +139,11 @@ public class ExoPlayerManager {
 
                            Log.d("arr",specialSessionVideos.get(0).getVideoId()+"");
                            try {
+//                               List<String> videosDone = new ArrayList<>();
+//                               videosDone.add(videoUrl);
                                docRef.update("specialSessionVideos", specialSessionVideos);
+                               Intent i = new Intent(mContext.getApplicationContext(), SpecialSessionActivity.class);
+                               mContext.startActivity(i);
                            } catch (IllegalArgumentException e){
                                e.printStackTrace();
                            }

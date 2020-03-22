@@ -75,11 +75,11 @@
                 <action android:name=".receiver.NOTIFY_ACTION" />
             </intent-filter>
         </service>
-        <service android:name=".fcm.MyFirebaseInstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
+        <!--<service android:name=".fcm.MyFirebaseInstanceIDService">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.google.firebase.INSTANCE_ID_EVENT" />-->
+            <!--</intent-filter>-->
+        <!--</service>-->
         <service
             android:name=".fcm.MyJobService"
             android:exported="false">
@@ -90,7 +90,7 @@
         <!--add this below android:exported="true"-->
         <service
             android:name="com.google.firebase.messaging.FirebaseMessagingService"
-            android:exported="true">
+            >
             <intent-filter android:priority="-500">
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

@@ -11,7 +11,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.google.android.gms.common.util.CrashUtils.ErrorDialogData;
+//import com.google.android.gms.common.util.CrashUtils.ErrorDialogData;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -47,7 +47,7 @@ public class BootReceiver extends BroadcastReceiver {
     private PendingIntent getPendingIntent() {
         Intent localIntent = new Intent("net.yoga.receiver.NOTIFY_ACTION");
         localIntent.setClass(context, NotificationPublisher.class);
-        localIntent.setFlags(ErrorDialogData.BINDER_CRASH);
+//        localIntent.setFlags(ErrorDialogData.BINDER_CRASH);
         return PendingIntent.getBroadcast(context, getNextRequestCode(), localIntent, 134217728);
     }
 

@@ -2,18 +2,17 @@ package net.yoga.fcm;
 
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
+//import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import java.io.IOException;
 
-public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
+public class MyFirebaseInstanceIDService /*extends FirebaseInstanceIdService*/ {
     private static final String TAG = "MyFirebaseIIDService";
 
-    @Override
+//    @Override
     public void onTokenRefresh() {
-        super.onTokenRefresh();
+//        super.onTokenRefresh();
 
         //now we will have the token
         String token = null;

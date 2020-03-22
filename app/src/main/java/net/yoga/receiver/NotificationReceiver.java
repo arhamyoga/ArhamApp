@@ -9,15 +9,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build.VERSION;
-import android.support.v4.app.NotificationCompat.BigPictureStyle;
-import android.support.v4.app.NotificationCompat.Builder;
+import androidx.core.app.NotificationCompat.BigPictureStyle;
+import androidx.core.app.NotificationCompat.Builder;
 import android.util.Log;
 
 
 import net.yoga.R;
 import net.yoga.activities.MainActivity;
-
-import java.util.Random;
 
 public class NotificationReceiver extends BroadcastReceiver {
     private final String CHANNEL_ID = "reminder_notification";

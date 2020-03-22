@@ -9,7 +9,7 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.os.Build.VERSION;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat.Builder;
+import androidx.core.app.NotificationCompat.Builder;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;

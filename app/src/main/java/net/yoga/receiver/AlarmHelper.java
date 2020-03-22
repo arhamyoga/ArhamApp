@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.util.CrashUtils;
@@ -41,7 +41,7 @@ public class AlarmHelper {
     private PendingIntent getPendingIntent() {
         Intent intent = new Intent("net.yoga.receiver.NOTIFY_ACTION");
         intent.setClass(this.context, NotificationPublisher.class);
-        intent.setFlags(CrashUtils.ErrorDialogData.BINDER_CRASH);
+//        intent.setFlags(CrashUtils.ErrorDialogData.BINDER_CRASH);
         return PendingIntent.getBroadcast(this.context, getNextRequestCode(), intent, 134217728);
     }
 
@@ -53,13 +53,14 @@ public class AlarmHelper {
     public PendingIntent existAlarm(int i) {
         Intent intent = new Intent("net.yoga.receiver.NOTIFY_ACTION");
         intent.setClass(this.context, NotificationPublisher.class);
-        return PendingIntent.getBroadcast(this.context, i, intent, CrashUtils.ErrorDialogData.DYNAMITE_CRASH);
+//        return PendingIntent.getBroadcast(this.context, i, intent, CrashUtils.ErrorDialogData.DYNAMITE_CRASH);
+        return PendingIntent.getBroadcast(this.context,i,intent,PendingIntent.FLAG_ONE_SHOT);
     }
 
     public boolean isAlarmScheduled(int i) {
         Intent intent = new Intent("net.yoga.receiver.NOTIFY_ACTION");
         intent.setClass(this.context, NotificationPublisher.class);
-        return PendingIntent.getBroadcast(this.context, i, intent, CrashUtils.ErrorDialogData.DYNAMITE_CRASH) != null;
+        return PendingIntent.getBroadcast(this.context, i, intent, PendingIntent.FLAG_ONE_SHOT) != null;
     }
     public void schedulePendingIntent(int i, int i2, int i3) {
         Calendar instance = Calendar.getInstance();

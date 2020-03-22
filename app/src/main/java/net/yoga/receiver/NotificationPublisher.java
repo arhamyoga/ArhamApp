@@ -11,11 +11,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build.VERSION;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.internal.view.SupportMenu;
+import androidx.core.app.NotificationCompat;
+import androidx.core.internal.view.SupportMenu;
 import android.util.Log;
 
-import com.google.android.gms.common.util.CrashUtils.ErrorDialogData;
+//import com.google.android.gms.common.util.CrashUtils.ErrorDialogData;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -66,7 +66,7 @@ public class NotificationPublisher extends BroadcastReceiver {
             Intent intent = new Intent(context, MainActivity.class);
             intent.setAction("android.intent.action.MAIN");
             intent.addCategory("android.intent.category.LAUNCHER");
-            intent.addFlags(ErrorDialogData.BINDER_CRASH);
+//            intent.addFlags(ErrorDialogData.BINDER_CRASH);
             Notification build = new Builder(context).setContentIntent(PendingIntent.getActivity(context, getNextNotifId(), intent, 0))
                     .setAutoCancel(true).setWhen(System.currentTimeMillis()).setSmallIcon(R.drawable.icon_notification)
                     .setContentTitle("Hey! it's Arham Time").setContentText("Let's do some Arham Yoga").setDefaults(1).build();
@@ -79,7 +79,7 @@ public class NotificationPublisher extends BroadcastReceiver {
         Intent intent2 = new Intent(context, MainActivity.class);
         intent2.setAction("android.intent.action.MAIN");
         intent2.addCategory("android.intent.category.LAUNCHER");
-        intent2.addFlags(ErrorDialogData.BINDER_CRASH);
+//        intent2.addFlags(ErrorDialogData.BINDER_CRASH);
         NotificationManager notificationManager2 = (NotificationManager) context.getSystemService("notification");
         String str = "my_channel_id_01";
         NotificationChannel notificationChannel = new NotificationChannel(str, "My Notifications", 4);

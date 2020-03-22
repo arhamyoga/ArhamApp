@@ -8,7 +8,7 @@
     tools:context="net.yoga.activities.Splash">
 
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
@@ -24,6 +24,6 @@
             android:layout_height="match_parent"
             android:src="@drawable/splash_new" />
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
