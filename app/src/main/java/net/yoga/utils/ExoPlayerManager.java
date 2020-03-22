@@ -144,6 +144,7 @@ public class ExoPlayerManager {
                                docRef.update("specialSessionVideos", specialSessionVideos);
                                Intent i = new Intent(mContext.getApplicationContext(), SpecialSessionActivity.class);
                                mContext.startActivity(i);
+                               docRef.update("specialSessionVideos", specialSessionVideos);
                            } catch (IllegalArgumentException e){
                                e.printStackTrace();
                            }
