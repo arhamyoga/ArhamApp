@@ -66,6 +66,16 @@
             android:layout_gravity="center"
             android:id="@+id/no_videos" />
 
+        <TextView
+            android:id="@+id/nointernet"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please connect to the internet..."
+            android:textSize="40sp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+
     </FrameLayout>
 
 </LinearLayout>

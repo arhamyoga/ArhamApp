@@ -87,6 +87,7 @@
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
+        <!--add this below android:exported="true"-->
         <service
             android:name="com.google.firebase.messaging.FirebaseMessagingService"
             android:exported="true">

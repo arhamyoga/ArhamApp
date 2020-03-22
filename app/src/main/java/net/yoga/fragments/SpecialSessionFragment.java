@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
@@ -82,7 +83,10 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
             thumbnailView.initialize(getYoutubeApiKey(), this);
             VideoList.setVisibility(View.VISIBLE);
         } else {
-            Snackbar.make(view.findViewById(android.R.id.content),"Please connect to internet...",Snackbar.LENGTH_SHORT).show();
+            TextView noInternet = view.findViewById(R.id.nointernet);
+            noInternet.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+//            Snackbar.make(view.findViewById(android.R.id.content),"Please connect to internet...",Snackbar.LENGTH_SHORT).show();
         }
         return view;
     }

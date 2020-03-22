@@ -10,17 +10,18 @@ public class User {
     public Integer noOfSessionsCompleted;
     public String deviceId;
     public String fcmId;
-    public String myReferralCode;
-    public List<Long> timestamps;
-    public List<String> joinedReferralCode;
-    public List<SpecialSessionVideo> specialSessionVideos;
+    public String myReferralCode; //I'll share this code
+    public String myJoinedCode;// I joined using this code
+    public List<Long> timestamps; //timestamps for arham sessions done
+    public List<String> joinedReferralCode; // list of people who joined using my code
+    public List<SpecialSessionVideo> specialSessionVideos; //status of the special sessions done to be stored here
 
     public User() {
     }
 
 
-    public User(String userName, String state, String city, Integer noOfSessionsCompleted, String deviceId, String fcmId,
-                String myReferralCode, List<Long> timestamps, List<String> joinedReferralCode, List<SpecialSessionVideo> specialSessionVideos) {
+    public User(String userName, String state, String city, Integer noOfSessionsCompleted, String deviceId, String fcmId, String myReferralCode,
+                String myJoinedCode, List<Long> timestamps, List<String> joinedReferralCode, List<SpecialSessionVideo> specialSessionVideos) {
         this.userName = userName;
         this.state = state;
         this.city = city;
@@ -28,6 +29,7 @@ public class User {
         this.deviceId = deviceId;
         this.fcmId = fcmId;
         this.myReferralCode = myReferralCode;
+        this.myJoinedCode = myJoinedCode;
         this.timestamps = timestamps;
         this.joinedReferralCode = joinedReferralCode;
         this.specialSessionVideos = specialSessionVideos;
@@ -111,5 +113,13 @@ public class User {
 
     public void setTimestamps(List<Long> timestamps) {
         this.timestamps = timestamps;
+    }
+
+    public String getMyJoinedCode() {
+        return myJoinedCode;
+    }
+
+    public void setMyJoinedCode(String myJoinedCode) {
+        this.myJoinedCode = myJoinedCode;
     }
 }

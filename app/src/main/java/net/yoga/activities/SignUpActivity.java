@@ -11,15 +11,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import net.yoga.R;
+import net.yoga.model.SpecialSessionVideo;
 import net.yoga.model.User;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -64,8 +69,10 @@ public class SignUpActivity extends AppCompatActivity {
 
         myReferralCode = generateReferralCode();
 
-        Query query = db.collection("users")
-                        .whereEqualTo("myReferralCode",myReferralCode);
+//        Query query = db.collection("users")
+//                        .whereEqualTo("myReferralCode",myReferralCode);
+        Query query = db.collection("users1")
+                .whereEqualTo("myReferralCode",myReferralCode);
         query.get().addOnSuccessListener(queryDocumentSnapshots -> {
             if(!queryDocumentSnapshots.isEmpty()){
                 myReferralCode = generateReferralCode();
@@ -79,9 +86,7 @@ public class SignUpActivity extends AppCompatActivity {
             String state = viewState.getText().toString();
             String name = viewName.getText().toString();
             String referralCode = viewReferralCode.getText().toString();
-            if(referralCode.length()!=0){
-//                user.setJoinedReferralCode(referralCode);
-            }
+            user.setMyJoinedCode(referralCode);
             if(city.length()!=0&&name.length()!=0&&state.length()!=0) {
                 user.setCity(city);
                 user.setState(state);
@@ -91,20 +96,49 @@ public class SignUpActivity extends AppCompatActivity {
                 user.setNoOfSessionsCompleted(0);
                 user.setFcmId(token);
                 user.setMyReferralCode(myReferralCode);
+                user.setJoinedReferralCode(new ArrayList<>());
+                SpecialSessionVideo specialSessionVideo = new SpecialSessionVideo();
+                List<SpecialSessionVideo> specialSessionVideos = new ArrayList<>();
+                specialSessionVideos.add(specialSessionVideo);
+                user.setSpecialSessionVideos(specialSessionVideos);
                 dialog.setMessage("Saving...");
                 dialog.show();
                 dialog.setCancelable(false);
-                db.collection("users").document(mobNo).set(user)
-                        .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(getApplicationContext(), "Account created successfully", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(i);
-                            dialog.dismiss();
-                            finish();
-                        })
-                        .addOnFailureListener(e -> {
-
-                        });
+                if(referralCode.length()!=0){
+                    Query query1 = db.collection("users1")
+                            .whereEqualTo("myReferralCode",referralCode);
+                    query1.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                        if(!queryDocumentSnapshots.isEmpty()) {
+                            String id = queryDocumentSnapshots.getDocuments().get(0).getId();
+                            DocumentReference docRef = db.collection("users1").document(id);
+                            docRef.get().addOnSuccessListener(documentSnapshot -> {
+                                if (documentSnapshot.exists()) {
+                                    User otherUser = documentSnapshot.toObject(User.class);
+                                    List<String> referrals = otherUser.getJoinedReferralCode();
+                                    if(referrals==null){
+                                        referrals = new ArrayList<>();
+                                    }
+                                    Log.d("joned",referrals+"");
+                                    referrals.add(mobNo);
+                                    docRef.update("joinedReferralCode",referrals);
+                                }
+                            });
+                        } else {
+                            Log.d("Other referrals","no code exists");
+                            user.setMyJoinedCode("");
+                        }
+                        db.collection("users1").document(mobNo).set(user)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(getApplicationContext(), "Account created successfully", Toast.LENGTH_SHORT).show();
+                                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(i);
+                                    dialog.dismiss();
+                                    finish();
+                                })
+                                .addOnFailureListener(e -> {
+                                });
+                    });
+                }
             } else {
                 if(TextUtils.isEmpty(city)){
                     viewCity.setError("Please fill this");

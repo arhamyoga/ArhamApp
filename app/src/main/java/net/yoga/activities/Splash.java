@@ -53,7 +53,7 @@ public class Splash extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             final String mobileNumber1 = currentUser.getPhoneNumber();
-            DocumentReference docRef = db.collection("users").document(mobileNumber1);
+            DocumentReference docRef = db.collection("users1").document(mobileNumber1);
             docRef.get().addOnSuccessListener(documentSnapshot -> {
                 Log.d("Document",documentSnapshot.exists()+"");
                 if(documentSnapshot.exists()){

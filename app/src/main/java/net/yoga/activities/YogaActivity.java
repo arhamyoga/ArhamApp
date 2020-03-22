@@ -215,16 +215,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.SetOptions;
 
 import net.yoga.R;
+import net.yoga.model.User;
 import net.yoga.sharedpref.SessionManager;
 import net.yoga.utils.ArcProgress;
 import net.yoga.utils.FBEventLogManager;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-/**
- * Created by pkumar on 11/7/2017.
- */
 
 public class YogaActivity extends AppCompatActivity {
 
@@ -246,9 +250,14 @@ public class YogaActivity extends AppCompatActivity {
     private boolean isPlaying;
     private Runnable UpdateProgress = new Runnable() {
         public void run() {
+            final DocumentReference docRef = db.collection("users1").document(mobileUser);
             if (isPlaying) {
                 currentTime = currentTime - 1;
                 progressView.setProgress(currentTime);
+                List<Long> timestamp = Arrays.asList(System.currentTimeMillis());
+                Map<String,Object> timestamps = new HashMap<>();
+                timestamps.put("timestamps",timestamp);
+//                docRef.set(timestamps, SetOptions.merge());
             }
             if (currentTime > 0) {
                 mHandler.postDelayed(this, 1000);
@@ -262,12 +271,20 @@ public class YogaActivity extends AppCompatActivity {
                 int countSessions = session.getArhamSessions()+1;
                 session.putNoOfSessions(countSessions);
                 Log.e("Session count",""+session.getArhamSessions());
-                final DocumentReference docRef = db.collection("users").document(mobileUser);
+
                 docRef.get().addOnSuccessListener(documentSnapshot -> {
                     if(documentSnapshot.exists()){
 //                        Long count = documentSnapshot.getLong("noOfSessionsCompleted");
 //                        count++;
                         Log.e("Session Updated",""+session.getArhamSessions());
+//                        docRef.update("timestamps", FieldValue.arrayUnion(System.currentTimeMillis()));
+                        User user = documentSnapshot.toObject(User.class);
+                        List<Long> timestamps = user.getTimestamps();
+                        if(timestamps==null){
+                            timestamps = new ArrayList<>();
+                        }
+                        timestamps.add(System.currentTimeMillis());
+                        docRef.update("timestamps",timestamps);
                         docRef.update("noOfSessionsCompleted",countSessions).addOnSuccessListener(aVoid -> Log.d("Arham Session","Completed"));
                     }
                 }).addOnFailureListener(e -> {

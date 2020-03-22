@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         prefsEditor = mSharedPreferences.edit();
 
         String currentMobile = mAuth.getCurrentUser().getPhoneNumber();
-        DocumentReference docRef = db.collection("users").document(currentMobile);
+        DocumentReference docRef = db.collection("users1").document(currentMobile);
 
         //navigation drawer
         Toolbar toolbar = findViewById(R.id.toolbar);

@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                     progressDialog.setMessage("Please wait...");
                     progressDialog.setCancelable(false);
                     progressDialog.show();
-                    DocumentReference docRef = db.collection("users").document(ccp.getFullNumberWithPlus()+"");
+                    DocumentReference docRef = db.collection("users1").document(ccp.getFullNumberWithPlus()+"");
                     docRef.get().addOnSuccessListener(documentSnapshot -> {
                         Bundle bundle = new Bundle();
                         Log.d("LoginDoc", documentSnapshot.exists() + "");
