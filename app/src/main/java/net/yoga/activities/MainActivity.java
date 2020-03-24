@@ -75,11 +75,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if(documentSnapshot.exists()){
                 User currentUser = documentSnapshot.toObject(User.class);
                 userName = currentUser.getUserName();
+                String myReferralCode = currentUser.getMyReferralCode();
                 Log.d("username",userName);
                 navHeadingName = navigationView.findViewById(R.id.navHeadingName);
                 sessionCount = navigationView.findViewById(R.id.session_count);
                 userName = Character.toUpperCase(userName.charAt(0))+userName.substring(1);
-                session.createSession(userName,currentUser.getNoOfSessionsCompleted());
+                session.createSession(userName,currentUser.getNoOfSessionsCompleted(),myReferralCode);
                 if(navHeadingName!=null&&sessionCount!=null) {
                     navHeadingName.setText("Welcome \n" + session.getUsername());
                     sessionCount.setText("Sessions completed : " + session.getArhamSessions());
@@ -166,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             i.setType("text/plain");
             i.putExtra(Intent.EXTRA_SUBJECT, "My application name");
             String sAux = "\nA unique yoga app based on ancient Jain philosophy.\n\n";
-            sAux = sAux + urlString;
+            sAux = sAux + urlString +"\n using my referral code : "+ session.getReferralCode();
             i.putExtra(Intent.EXTRA_TEXT, sAux);
             startActivity(Intent.createChooser(i, "choose one"));
         } catch(Exception e) {

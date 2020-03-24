@@ -17,6 +17,7 @@ public class SessionManager {
 
     public static final String KEY_USERNAME="username";
     public static final String KEY_ARHAM_SESSIONS="noOfSessions";
+    public static final String KEY_REFERRAL_CODE="referralcode";
 
     int PRIVATE_MODE=0;
 
@@ -26,10 +27,11 @@ public class SessionManager {
         editor=sharedPreferences.edit();
     }
 
-    public void createSession(String username,int noOfSessions){
+    public void createSession(String username,int noOfSessions,String myReferralCode){
         editor.putBoolean(IS_LOGIN,true);
         editor.putString(KEY_USERNAME,username);
         editor.putInt(KEY_ARHAM_SESSIONS,noOfSessions);
+        editor.putString(KEY_REFERRAL_CODE,myReferralCode);
         editor.commit();
     }
 
@@ -53,6 +55,10 @@ public class SessionManager {
 
     public int getArhamSessions(){
         return  sharedPreferences.getInt(KEY_ARHAM_SESSIONS,0);
+    }
+
+    public String getReferralCode() {
+        return sharedPreferences.getString(KEY_REFERRAL_CODE,"");
     }
 
 }

@@ -94,15 +94,16 @@ public class SignUpActivity extends AppCompatActivity {
                         Settings.Secure.ANDROID_ID));
                 user.setNoOfSessionsCompleted(0);
                 user.setFcmId(token);
+                user.setCreatedAt(System.currentTimeMillis());
                 user.setMyReferralCode(myReferralCode);
                 user.setJoinedReferralCode(new ArrayList<>());
-                SpecialSessionVideo specialSessionVideo = new SpecialSessionVideo();
-                List<SpecialSessionVideo> specialSessionVideos = new ArrayList<>();
-                specialSessionVideos.add(specialSessionVideo);
-                user.setSpecialSessionVideos(specialSessionVideos);
+                user.setSpecialSessionVideos(new ArrayList<>());
                 dialog.setMessage("Saving...");
                 dialog.show();
                 dialog.setCancelable(false);
+                if(referralCode.length()==0) {
+                    referralCode="abc";
+                }
                 if(referralCode.length()!=0){
                     Query query1 = db.collection("users1")
                             .whereEqualTo("myReferralCode",referralCode);

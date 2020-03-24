@@ -15,6 +15,7 @@ public class User {
     public List<Long> timestamps; //timestamps for arham sessions done
     public List<String> joinedReferralCode; // list of people who joined using my code
     public List<SpecialSessionVideo> specialSessionVideos; //status of the special sessions done to be stored here
+    public Long createdAt; //joining date of the new user
 
     public User() {
     }
@@ -121,5 +122,13 @@ public class User {
 
     public void setMyJoinedCode(String myJoinedCode) {
         this.myJoinedCode = myJoinedCode;
+    }
+
+    public Long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
     }
 }

@@ -78,13 +78,15 @@ import at.huber.youtubeExtractor.YtFile;
 public class VideoPlayerActivity extends AppCompatActivity {
 
     String url;
+    String videoTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
         Bundle bundle = getIntent().getExtras();
-        url = bundle.getString("videoUrl");
+        url = bundle.getString("videoId");
+        videoTitle = bundle.getString("videoTitle");
         Log.d("videourl to play",url);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         extractYoutubeUrl();
@@ -97,7 +99,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
                 Log.d("videoMeta",videoMeta.toString());
                 if (sparseArray != null) {
                     Log.e("err",sparseArray.toString());
-                    playVideo(sparseArray.get(22).getUrl());
+                    playVideo(sparseArray.get(18).getUrl());
                 }
             }
         };
@@ -108,7 +110,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         Log.d("download url",downloadUrl);
         PlayerView mPlayerView = findViewById(R.id.mPlayerView);
         mPlayerView.setPlayer(ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).getPlayerView().getPlayer());
-        ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).playStream(downloadUrl,url);
+        ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).playStream(downloadUrl,url,videoTitle);
     }
 
     @Override

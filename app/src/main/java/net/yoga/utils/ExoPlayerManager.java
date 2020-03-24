@@ -57,7 +57,7 @@ public class ExoPlayerManager {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
 
-    String mobileUser="",videoUrl="";
+    String mobileUser="",videoUrl="",videoTitle="";
 
     /**
      * private constructor
@@ -106,7 +106,7 @@ public class ExoPlayerManager {
 
                     playlistIndex++;
                     listner.onItemClickOnItem(playlistIndex);
-                    playStream(mPlayList.get(playlistIndex),videoUrl);
+                    playStream(mPlayList.get(playlistIndex),videoUrl,videoTitle);
                 } else if (playbackState == 4 && mPlayList != null && playlistIndex + 1 == mPlayList.size()) {
                     mPlayer.setPlayWhenReady(false);
                 }
@@ -129,25 +129,32 @@ public class ExoPlayerManager {
                            List<SpecialSessionVideo> specialSessionVideos = user.getSpecialSessionVideos();
                            if(specialSessionVideos==null){
                                specialSessionVideos = new ArrayList<>();
-                               Log.e("err","yes");
                            }
-                           SpecialSessionVideo specialSessionVideo = new SpecialSessionVideo();
-                           specialSessionVideo.setVideoId(videoUrl);
-                           specialSessionVideo.setCount(1);
-                           specialSessionVideo.setWatched(true);
-                           specialSessionVideos.add(specialSessionVideo);
+                           boolean flag = false;
+                           int counter = 0;
+                           for(SpecialSessionVideo ssv: specialSessionVideos) {
+                               if(ssv.getVideoId().equals(videoUrl)) {
+                                   ssv.setCount(ssv.getCount()+1);
+                                   flag = true;
+                                   specialSessionVideos.remove(counter);
+                                   specialSessionVideos.add(ssv);
+                                   break;
+                               }
+                               counter++;
+                           }
+                           if(!flag) {
+                               SpecialSessionVideo specialSessionVideo = new SpecialSessionVideo();
+                               specialSessionVideo.setVideoId(videoUrl);
+                               specialSessionVideo.setTitle(videoTitle);
+                               specialSessionVideo.setCount(1);
+                               specialSessionVideo.setWatched(true);
+                               specialSessionVideos.add(specialSessionVideo);
+                           }
+                           docRef.update("specialSessionVideos", specialSessionVideos);
+                           Intent i = new Intent(mContext.getApplicationContext(), SpecialSessionActivity.class);
+                           i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                           mContext.startActivity(i);
 
-                           Log.d("arr",specialSessionVideos.get(0).getVideoId()+"");
-                           try {
-//                               List<String> videosDone = new ArrayList<>();
-//                               videosDone.add(videoUrl);
-                               docRef.update("specialSessionVideos", specialSessionVideos);
-                               Intent i = new Intent(mContext.getApplicationContext(), SpecialSessionActivity.class);
-                               mContext.startActivity(i);
-                               docRef.update("specialSessionVideos", specialSessionVideos);
-                           } catch (IllegalArgumentException e){
-                               e.printStackTrace();
-                           }
                        }
                     });
                 }
@@ -206,9 +213,10 @@ public class ExoPlayerManager {
         return mPlayerView;
     }
 
-    public void playStream(String urlToPlay,String url) {
+    public void playStream(String urlToPlay,String url,String videoTitle) {
         uriString = urlToPlay;
         videoUrl = url;
+        this.videoTitle = videoTitle;
         Uri mp4VideoUri = Uri.parse(uriString);
         MediaSource videoSource;
         String filenameArray[] = urlToPlay.split("\\.");
@@ -239,7 +247,7 @@ public class ExoPlayerManager {
         mPlayList = uriArrayList;
         playlistIndex = index;
         listner = callBack;
-        playStream(mPlayList.get(playlistIndex),videoUrl);
+        playStream(mPlayList.get(playlistIndex),videoUrl,videoTitle);
     }
 
 

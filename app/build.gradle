@@ -15,12 +15,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    compileSdkVersion 28
-//    buildToolsVersion "29.0.1"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.1"
     defaultConfig {
         applicationId "net.yoga"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 23
         versionName "1.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

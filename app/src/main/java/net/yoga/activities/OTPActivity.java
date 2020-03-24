@@ -23,10 +23,13 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import net.yoga.R;
+import net.yoga.model.User;
 
+import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
 import static net.yoga.utils.Utils.isOnline;
@@ -41,6 +44,7 @@ public class OTPActivity extends AppCompatActivity {
     FirebaseFirestore db;
     ProgressDialog progressDialog;
     TextView waitOTP;
+    String myReferralCode="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +178,18 @@ public class OTPActivity extends AppCompatActivity {
                             final DocumentReference docRef = db.collection("users1").document(mobileUser);
                             docRef.get().addOnSuccessListener(documentSnapshot -> {
                                 if(documentSnapshot.exists()){
+                                    User user = documentSnapshot.toObject(User.class);
+                                    if(user.getMyReferralCode()==null){
+                                        myReferralCode = generateReferralCode();
+                                        Query query = db.collection("users1")
+                                                .whereEqualTo("myReferralCode",myReferralCode);
+                                        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                                            if(!queryDocumentSnapshots.isEmpty()){
+                                                myReferralCode = generateReferralCode();
+                                            }
+                                        });
+                                        docRef.update("myReferralCode",myReferralCode);
+                                    }
                                     docRef.update("fcmId",token).addOnSuccessListener(aVoid -> {
                                         Log.d("Arham Session","Completed");
                                         progressDialog.dismiss();
@@ -215,5 +231,24 @@ public class OTPActivity extends AppCompatActivity {
                         snackbar.show();
                     }
                 });
+    }
+
+    private String generateReferralCode(){
+        char[] corpus = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+        int generated = 0;
+        int desired=6;
+        char[] result= new char[desired];
+
+        while(generated<desired){
+            byte[] ran = SecureRandom.getSeed(desired);
+            for(byte b: ran){
+                if(b>=0&&b<corpus.length){
+                    result[generated] = corpus[b];
+                    generated+=1;
+                    if(generated==desired) break;
+                }
+            }
+        }
+        return new String(result);
     }
 }
