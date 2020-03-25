@@ -33,6 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
     FirebaseFirestore db;
     ProgressDialog dialog;
     String myReferralCode;
+    boolean flagUniqueCode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +71,17 @@ public class SignUpActivity extends AppCompatActivity {
 
 //        Query query = db.collection("users")
 //                        .whereEqualTo("myReferralCode",myReferralCode);
-        Query query = db.collection("users1")
-                .whereEqualTo("myReferralCode",myReferralCode);
-        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
-            if(!queryDocumentSnapshots.isEmpty()){
-                myReferralCode = generateReferralCode();
-            }
-        });
+        while(!flagUniqueCode) {
+            Query query = db.collection("users1")
+                    .whereEqualTo("myReferralCode", myReferralCode);
+            query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                if (!queryDocumentSnapshots.isEmpty()) {
+                    myReferralCode = generateReferralCode();
+                } else {
+                    flagUniqueCode = true;
+                }
+            });
+        }
 
 
         proceed.setOnClickListener(v -> {

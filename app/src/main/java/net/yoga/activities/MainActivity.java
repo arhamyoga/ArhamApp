@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor prefsEditor;
     SessionManager session;
+    TextView showUserDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         session = new SessionManager(getApplicationContext());
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext().getApplicationContext());
         prefsEditor = mSharedPreferences.edit();
-
         String currentMobile = mAuth.getCurrentUser().getPhoneNumber();
         DocumentReference docRef = db.collection("users1").document(currentMobile);
 
@@ -70,29 +71,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         //navigation drawer listener
         final NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerview = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
+        showUserDetails = headerview.findViewById(R.id.my_profile);
+        showUserDetails.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(),UserDetailsActivity.class);
+            startActivity(intent);
+        });
         docRef.get().addOnSuccessListener(documentSnapshot -> {
             if(documentSnapshot.exists()){
                 User currentUser = documentSnapshot.toObject(User.class);
                 userName = currentUser.getUserName();
                 String myReferralCode = currentUser.getMyReferralCode();
                 Log.d("username",userName);
-                navHeadingName = navigationView.findViewById(R.id.navHeadingName);
-                sessionCount = navigationView.findViewById(R.id.session_count);
+//                navHeadingName = navigationView.findViewById(R.id.navHeadingName);
+//                sessionCount = navigationView.findViewById(R.id.session_count);
                 userName = Character.toUpperCase(userName.charAt(0))+userName.substring(1);
                 session.createSession(userName,currentUser.getNoOfSessionsCompleted(),myReferralCode);
-                if(navHeadingName!=null&&sessionCount!=null) {
-                    navHeadingName.setText("Welcome \n" + session.getUsername());
-                    sessionCount.setText("Sessions completed : " + session.getArhamSessions());
-                }
+//                if(navHeadingName!=null&&sessionCount!=null) {
+//                    navHeadingName.setText("Welcome \n" + session.getUsername());
+//                    sessionCount.setText("Sessions completed : " + session.getArhamSessions());
+//                }
             }
         }).addOnFailureListener(e -> {
-            navHeadingName = navigationView.findViewById(R.id.navHeadingName);
-            sessionCount = navigationView.findViewById(R.id.session_count);
-            if(navHeadingName!=null&sessionCount!=null) {
-                navHeadingName.setText("Welcome \n" + session.getUsername());
-                sessionCount.setText("Sessions completed : " + session.getArhamSessions());
-            }
+//            navHeadingName = navigationView.findViewById(R.id.navHeadingName);
+//            sessionCount = navigationView.findViewById(R.id.session_count);
+//            if(navHeadingName!=null&sessionCount!=null) {
+//                navHeadingName.setText("Welcome \n" + session.getUsername());
+//                sessionCount.setText("Sessions completed : " + session.getArhamSessions());
+//            }
         });
         if(isOnline(getApplicationContext())&&session.isLoggedIn()){
             docRef.update("noOfSessionsCompleted",session.getArhamSessions()).addOnSuccessListener(aVoid -> Log.d("Arham Session","Completed"));

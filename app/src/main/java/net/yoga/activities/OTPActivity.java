@@ -45,6 +45,7 @@ public class OTPActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     TextView waitOTP;
     String myReferralCode="";
+    boolean flagUniqueCode=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,13 +182,17 @@ public class OTPActivity extends AppCompatActivity {
                                     User user = documentSnapshot.toObject(User.class);
                                     if(user.getMyReferralCode()==null){
                                         myReferralCode = generateReferralCode();
-                                        Query query = db.collection("users1")
-                                                .whereEqualTo("myReferralCode",myReferralCode);
-                                        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
-                                            if(!queryDocumentSnapshots.isEmpty()){
-                                                myReferralCode = generateReferralCode();
-                                            }
-                                        });
+                                        while(!flagUniqueCode) {
+                                            Query query = db.collection("users1")
+                                                    .whereEqualTo("myReferralCode", myReferralCode);
+                                            query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                                                if (!queryDocumentSnapshots.isEmpty()) {
+                                                    myReferralCode = generateReferralCode();
+                                                } else {
+                                                    flagUniqueCode = true;
+                                                }
+                                            });
+                                        }
                                         docRef.update("myReferralCode",myReferralCode);
                                     }
                                     docRef.update("fcmId",token).addOnSuccessListener(aVoid -> {

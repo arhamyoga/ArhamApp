@@ -16,13 +16,14 @@ public class User {
     public List<String> joinedReferralCode; // list of people who joined using my code
     public List<SpecialSessionVideo> specialSessionVideos; //status of the special sessions done to be stored here
     public Long createdAt; //joining date of the new user
+    public List<Campaigns> campaigns;
 
     public User() {
     }
 
 
-    public User(String userName, String state, String city, Integer noOfSessionsCompleted, String deviceId, String fcmId, String myReferralCode,
-                String myJoinedCode, List<Long> timestamps, List<String> joinedReferralCode, List<SpecialSessionVideo> specialSessionVideos) {
+    public User(String userName, String state, String city, Integer noOfSessionsCompleted, String deviceId, String fcmId, String myReferralCode, String myJoinedCode,
+                List<Long> timestamps, List<String> joinedReferralCode, List<SpecialSessionVideo> specialSessionVideos, Long createdAt, List<Campaigns> campaigns) {
         this.userName = userName;
         this.state = state;
         this.city = city;
@@ -34,6 +35,8 @@ public class User {
         this.timestamps = timestamps;
         this.joinedReferralCode = joinedReferralCode;
         this.specialSessionVideos = specialSessionVideos;
+        this.createdAt = createdAt;
+        this.campaigns = campaigns;
     }
 
     public String getMyReferralCode() {
@@ -130,5 +133,13 @@ public class User {
 
     public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<Campaigns> getCampaigns() {
+        return campaigns;
+    }
+
+    public void setCampaigns(List<Campaigns> campaigns) {
+        this.campaigns = campaigns;
     }
 }
