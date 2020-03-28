@@ -16,10 +16,10 @@
             android:title="Arham Timer"
             android:icon="@drawable/ic_event_note_black_24dp"/>
 
-        <item
-            android:id="@+id/action_notifications"
-            android:title="Notifications"
-            android:icon="@drawable/icon_notification"/>
+        <!--<item-->
+            <!--android:id="@+id/action_notifications"-->
+            <!--android:title="Notifications"-->
+            <!--android:icon="@drawable/icon_notification"/>-->
 
         <item
             android:id="@+id/action_share"

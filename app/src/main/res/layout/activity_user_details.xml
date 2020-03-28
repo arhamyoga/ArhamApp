@@ -205,6 +205,7 @@
 		<EditText
 			android:id="@+id/referral_code_input"
 			android:layout_width="150dp"
+			android:singleLine="true"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="15dp"
 			android:hint="Enter the Code" />

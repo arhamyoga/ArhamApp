@@ -4,12 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -18,12 +19,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import net.yoga.R;
-import net.yoga.model.SpecialSessionVideo;
 import net.yoga.model.User;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.yoga.utils.Utils.generateReferralCode;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -71,17 +72,15 @@ public class SignUpActivity extends AppCompatActivity {
 
 //        Query query = db.collection("users")
 //                        .whereEqualTo("myReferralCode",myReferralCode);
-        while(!flagUniqueCode) {
-            Query query = db.collection("users1")
-                    .whereEqualTo("myReferralCode", myReferralCode);
-            query.get().addOnSuccessListener(queryDocumentSnapshots -> {
-                if (!queryDocumentSnapshots.isEmpty()) {
-                    myReferralCode = generateReferralCode();
-                } else {
-                    flagUniqueCode = true;
-                }
-            });
-        }
+        Query query = db.collection("users")
+                .whereEqualTo("myReferralCode", myReferralCode);
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if (!queryDocumentSnapshots.isEmpty()) {
+                myReferralCode = generateReferralCode();
+            } else {
+                flagUniqueCode = true;
+            }
+        });
 
 
         proceed.setOnClickListener(v -> {
@@ -110,12 +109,12 @@ public class SignUpActivity extends AppCompatActivity {
                     referralCode="abc";
                 }
                 if(referralCode.length()!=0){
-                    Query query1 = db.collection("users1")
+                    Query query1 = db.collection("users")
                             .whereEqualTo("myReferralCode",referralCode);
                     query1.get().addOnSuccessListener(queryDocumentSnapshots -> {
                         if(!queryDocumentSnapshots.isEmpty()) {
                             String id = queryDocumentSnapshots.getDocuments().get(0).getId();
-                            DocumentReference docRef = db.collection("users1").document(id);
+                            DocumentReference docRef = db.collection("users").document(id);
                             docRef.get().addOnSuccessListener(documentSnapshot -> {
                                 if (documentSnapshot.exists()) {
                                     User otherUser = documentSnapshot.toObject(User.class);
@@ -132,7 +131,7 @@ public class SignUpActivity extends AppCompatActivity {
                             Log.d("Other referrals","no code exists");
                             user.setMyJoinedCode("");
                         }
-                        db.collection("users1").document(mobNo).set(user)
+                        db.collection("users").document(mobNo).set(user)
                                 .addOnSuccessListener(aVoid -> {
                                     Toast.makeText(getApplicationContext(), "Account created successfully", Toast.LENGTH_SHORT).show();
                                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
@@ -161,22 +160,4 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private String generateReferralCode(){
-        char[] corpus = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
-        int generated = 0;
-        int desired=6;
-        char[] result= new char[desired];
-
-        while(generated<desired){
-            byte[] ran = SecureRandom.getSeed(desired);
-            for(byte b: ran){
-                if(b>=0&&b<corpus.length){
-                    result[generated] = corpus[b];
-                    generated+=1;
-                    if(generated==desired) break;
-                }
-            }
-        }
-        return new String(result);
-    }
 }

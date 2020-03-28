@@ -18,6 +18,12 @@ public class SessionManager {
     public static final String KEY_USERNAME="username";
     public static final String KEY_ARHAM_SESSIONS="noOfSessions";
     public static final String KEY_REFERRAL_CODE="referralcode";
+    public static final String KEY_REFERRAL_COUNT="referraljoined";
+
+    public static final String KEY_CAMPAIGN_SESSION_ID = "campaignid";
+    public static final String KEY_CAMPAIGN_SESSION_COUNT = "campaignsessioncount";
+    public static final String KEY_CAMPAIGN_SESSION_NAME = "campaignname";
+    public static final String KEY_CAMPAIGN_ENROLLED_STATUS = "campaignenrolled";
 
     int PRIVATE_MODE=0;
 

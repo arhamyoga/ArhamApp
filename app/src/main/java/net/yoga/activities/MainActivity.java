@@ -5,29 +5,31 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.Query;
 
 import net.yoga.R;
 import net.yoga.model.User;
 import net.yoga.sharedpref.SessionManager;
 
+import static net.yoga.utils.Utils.generateReferralCode;
 import static net.yoga.utils.Utils.isOnline;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,11 +43,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences.Editor prefsEditor;
     SessionManager session;
     TextView showUserDetails;
+    String myReferralCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        Bundle bundle = getIntent().getExtras();
+//        String statusCampaign = bundle.getString("campaignenrolled");
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -58,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext().getApplicationContext());
         prefsEditor = mSharedPreferences.edit();
         String currentMobile = mAuth.getCurrentUser().getPhoneNumber();
-        DocumentReference docRef = db.collection("users1").document(currentMobile);
+        DocumentReference docRef = db.collection("users").document(currentMobile);
 
         //navigation drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -82,24 +88,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if(documentSnapshot.exists()){
                 User currentUser = documentSnapshot.toObject(User.class);
                 userName = currentUser.getUserName();
+                if(currentUser.getMyReferralCode()==null){
+                    myReferralCode = generateReferralCode();
+                    Log.d("entered",myReferralCode+"123");
+                    Log.d("entered","while");
+                    Query query = db.collection("users")
+                            .whereEqualTo("myReferralCode", myReferralCode);
+                    query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                        Log.d("entered","response");
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            myReferralCode = generateReferralCode();
+                            Log.d("entered","code found");
+                        } else {
+                            Log.d("entered","code not found");
+                        }
+                    });
+                    docRef.update("myReferralCode",myReferralCode);
+                }
                 String myReferralCode = currentUser.getMyReferralCode();
                 Log.d("username",userName);
-//                navHeadingName = navigationView.findViewById(R.id.navHeadingName);
-//                sessionCount = navigationView.findViewById(R.id.session_count);
                 userName = Character.toUpperCase(userName.charAt(0))+userName.substring(1);
                 session.createSession(userName,currentUser.getNoOfSessionsCompleted(),myReferralCode);
-//                if(navHeadingName!=null&&sessionCount!=null) {
-//                    navHeadingName.setText("Welcome \n" + session.getUsername());
-//                    sessionCount.setText("Sessions completed : " + session.getArhamSessions());
-//                }
             }
         }).addOnFailureListener(e -> {
-//            navHeadingName = navigationView.findViewById(R.id.navHeadingName);
-//            sessionCount = navigationView.findViewById(R.id.session_count);
-//            if(navHeadingName!=null&sessionCount!=null) {
-//                navHeadingName.setText("Welcome \n" + session.getUsername());
-//                sessionCount.setText("Sessions completed : " + session.getArhamSessions());
-//            }
         });
         if(isOnline(getApplicationContext())&&session.isLoggedIn()){
             docRef.update("noOfSessionsCompleted",session.getArhamSessions()).addOnSuccessListener(aVoid -> Log.d("Arham Session","Completed"));
@@ -132,11 +143,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.action_rateus:
                 rateUs();
                 break;
-            case R.id.action_notifications:
-                Intent i = new Intent(getApplicationContext(),NotificationsActivity.class);
-                startActivity(i);
-                finish();
-                break;
+//            case R.id.action_notifications:
+//                Intent i = new Intent(getApplicationContext(),NotificationsActivity.class);
+//                startActivity(i);
+//                finish();
+//                break;
             case R.id.action_arhamTimer:
                 Intent i2 = new Intent(getApplicationContext(),ReminderActivity.class);
                 startActivity(i2);

@@ -16,19 +16,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import net.yoga.R;
+import net.yoga.model.Campaigns;
+import net.yoga.model.User;
+import net.yoga.sharedpref.SessionManager;
 import net.yoga.utils.FBEventLogManager;
 
-/**
- * Created by mvnpavan on 08/11/17.
- */
+import java.util.List;
 
 public class Splash extends AppCompatActivity {
 
-    private static final String TAG = "ARM-S";
+    private static final String TAG = "Arham";
 
     private Context context;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
+    SessionManager session;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,12 +40,14 @@ public class Splash extends AppCompatActivity {
         context = this;
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance(FirebaseApp.initializeApp(getApplicationContext()));
+        session = new SessionManager(this);
         FBEventLogManager.initialize(this);
         FBEventLogManager.logArhamAppStarted();
 
         db = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setTimestampsInSnapshotsEnabled(true)
+                .setPersistenceEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
     }
@@ -52,31 +56,48 @@ public class Splash extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            final String mobileNumber1 = currentUser.getPhoneNumber();
-            DocumentReference docRef = db.collection("users1").document(mobileNumber1);
+            final String mobileNumber = currentUser.getPhoneNumber();
+            DocumentReference docRef = db.collection("users").document(mobileNumber);
             docRef.get().addOnSuccessListener(documentSnapshot -> {
-                Log.d("Document",documentSnapshot.exists()+"");
+                Log.d(TAG,"DocumentSplash : "+documentSnapshot.exists());
+                Log.d(TAG,"currentMobile : "+mobileNumber);
                 if(documentSnapshot.exists()){
-//                        User user = documentSnapshot.toObject(User.class);
-                    startActivity(new Intent(Splash.this, MainActivity.class));
+                    User user = documentSnapshot.toObject(User.class);
+                    Bundle bundle = new Bundle();
+                    List<Campaigns> campaignsList = user.getCampaigns();
+                    if(campaignsList == null || campaignsList.size()==0) {
+                        bundle.putString("campaignenrolled","notanswered");
+                    } else {
+                        for(Campaigns campaigns: campaignsList) {
+                            if(campaigns.getCampaignId().equalsIgnoreCase("Yoga Day")){
+                                if(campaigns.getEnrolled()) {
+                                    bundle.putString("campaignenrolled","enrolled");
+                                } else {
+                                    bundle.putString("campaignenrolled","notenrolled");
+                                }
+                                break;
+                            } else {
+                                bundle.putString("campaignenrolled","notanswered");
+                            }
+                        }
+                    }
+                    Log.d(TAG,"SplashBundle : "+bundle);
+                    Intent intent = new Intent(Splash.this,MainActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                     finish();
                 } else {
                     Bundle bundle = new Bundle();
-                    bundle.putString("mobile",mobileNumber1);
+                    bundle.putString("mobile",mobileNumber);
                     Intent i = new Intent(Splash.this, SignUpActivity.class);
                     i.putExtras(bundle);
                     startActivity(i);
                     finish();
                 }
             }).addOnFailureListener(e -> {
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("mobile",mobileNumber1);
-//                    startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-//                    progressDialog.dismiss();
-//                    finish();
-                Log.e("LoginActivity","Problem connecting to db");
+                Log.e(TAG,"LoginActivity : "+"Problem connecting to db");
             });
-            Log.d("mobileNumberUser", mobileNumber1 + "");
+            Log.d(TAG, "mobileNumberUser : "+ mobileNumber);
         } else {
             Handler handler = new Handler();
             handler.postDelayed(() -> {

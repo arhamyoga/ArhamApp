@@ -85,7 +85,6 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
             TextView noInternet = view.findViewById(R.id.nointernet);
             noInternet.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
-//            Snackbar.make(view.findViewById(android.R.id.content),"Please connect to internet...",Snackbar.LENGTH_SHORT).show();
         }
         return view;
     }

@@ -176,25 +176,10 @@ public class OTPActivity extends AppCompatActivity {
                         //verification successful we will start the profile activity
                         if(status.equals("login")) {
                             String mobileUser = firebaseAuth.getCurrentUser().getPhoneNumber();
-                            final DocumentReference docRef = db.collection("users1").document(mobileUser);
+                            final DocumentReference docRef = db.collection("users").document(mobileUser);
                             docRef.get().addOnSuccessListener(documentSnapshot -> {
                                 if(documentSnapshot.exists()){
                                     User user = documentSnapshot.toObject(User.class);
-                                    if(user.getMyReferralCode()==null){
-                                        myReferralCode = generateReferralCode();
-                                        while(!flagUniqueCode) {
-                                            Query query = db.collection("users1")
-                                                    .whereEqualTo("myReferralCode", myReferralCode);
-                                            query.get().addOnSuccessListener(queryDocumentSnapshots -> {
-                                                if (!queryDocumentSnapshots.isEmpty()) {
-                                                    myReferralCode = generateReferralCode();
-                                                } else {
-                                                    flagUniqueCode = true;
-                                                }
-                                            });
-                                        }
-                                        docRef.update("myReferralCode",myReferralCode);
-                                    }
                                     docRef.update("fcmId",token).addOnSuccessListener(aVoid -> {
                                         Log.d("Arham Session","Completed");
                                         progressDialog.dismiss();
@@ -238,22 +223,4 @@ public class OTPActivity extends AppCompatActivity {
                 });
     }
 
-    private String generateReferralCode(){
-        char[] corpus = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
-        int generated = 0;
-        int desired=6;
-        char[] result= new char[desired];
-
-        while(generated<desired){
-            byte[] ran = SecureRandom.getSeed(desired);
-            for(byte b: ran){
-                if(b>=0&&b<corpus.length){
-                    result[generated] = corpus[b];
-                    generated+=1;
-                    if(generated==desired) break;
-                }
-            }
-        }
-        return new String(result);
-    }
 }

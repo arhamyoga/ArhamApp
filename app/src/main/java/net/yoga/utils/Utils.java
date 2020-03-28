@@ -5,6 +5,8 @@ import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.security.SecureRandom;
+
 /**
  * Created by bruce on 14-11-6.
  */
@@ -35,6 +37,25 @@ public final class Utils {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public static String generateReferralCode(){
+        char[] corpus = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+        int generated = 0;
+        int desired=6;
+        char[] result= new char[desired];
+
+        while(generated<desired){
+            byte[] ran = SecureRandom.getSeed(desired);
+            for(byte b: ran){
+                if(b>=0&&b<corpus.length){
+                    result[generated] = corpus[b];
+                    generated+=1;
+                    if(generated==desired) break;
+                }
+            }
+        }
+        return new String(result);
     }
 
 }

@@ -48,7 +48,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         initialize();
         String currentMobile = mAuth.getCurrentUser().getPhoneNumber();
         Log.d("mobile",currentMobile);
-        DocumentReference docRef = db.collection("users1").document(currentMobile);
+        DocumentReference docRef = db.collection("users").document(currentMobile);
         docRef.get().addOnSuccessListener(documentSnapshot -> {
             User user = documentSnapshot.toObject(User.class);
             List<Campaigns> campaignsList = user.getCampaigns();
@@ -61,51 +61,61 @@ public class UserDetailsActivity extends AppCompatActivity {
                     campaignLayout.setVisibility(View.GONE);
                 }
             }
+            if(user.getJoinedReferralCode()!=null) {
+                int countJoinees = user.getJoinedReferralCode().size();
+                referralsJoined.setText(countJoinees + "");
+            } else {
+                docRef.update("joinedReferralCode",new ArrayList<>());
+            }
             String myJoinedCode = user.getMyJoinedCode();
-            Log.d("joined",myJoinedCode);
-            if(myJoinedCode.length()==0) {
-                referralLayout.setVisibility(View.VISIBLE);
-                saveButton.setOnClickListener(view -> {
-                    String referralInput = referralCodeInput.getText().toString();
-                    if(referralInput.length()==0) {
-                        referralCodeInput.setError("Enter valid code");
-                    } else {
-                        progress.setMessage("Saving...");
-                        progress.show();
-                        progress.setCancelable(false);
-                        Query query1 = db.collection("users1")
-                                .whereEqualTo("myReferralCode",referralInput);
-                        query1.get().addOnSuccessListener(queryDocumentSnapshots -> {
-                            if (!queryDocumentSnapshots.isEmpty()) {
-                                String id = queryDocumentSnapshots.getDocuments().get(0).getId();
-                                DocumentReference docRef1 = db.collection("users1").document(id);
-                                docRef1.get().addOnSuccessListener(documentSnapshot1 -> {
-                                    if (documentSnapshot1.exists()) {
-                                        User otherUser = documentSnapshot.toObject(User.class);
-                                        List<String> referrals = otherUser.getJoinedReferralCode();
-                                        if (referrals == null) {
-                                            referrals = new ArrayList<>();
-                                        }
-                                        Log.d("joned", referrals + "");
-                                        referrals.add(currentMobile);
-                                        docRef1.update("joinedReferralCode", referrals).addOnSuccessListener(aVoid -> {
-                                            referralLayout.setVisibility(View.GONE);
-                                            docRef.update("myJoinedCode", referralInput);
+            if(myJoinedCode!=null) {
+                Log.d("joined", myJoinedCode);
+                if (myJoinedCode.length() == 0) {
+                    referralLayout.setVisibility(View.VISIBLE);
+                    saveButton.setOnClickListener(view -> {
+                        String referralInput = referralCodeInput.getText().toString();
+                        if (referralInput.length() == 0) {
+                            referralCodeInput.setError("Enter valid code");
+                        } else if (referralInput.equalsIgnoreCase(session.getReferralCode())) {
+                            referralCodeInput.setError("You cannot refer yourself!!!");
+                        } else {
+                            progress.setMessage("Saving...");
+                            progress.show();
+                            progress.setCancelable(false);
+                            Query query1 = db.collection("users")
+                                    .whereEqualTo("myReferralCode", referralInput);
+                            query1.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                                if (!queryDocumentSnapshots.isEmpty()) {
+                                    String id = queryDocumentSnapshots.getDocuments().get(0).getId();
+                                    DocumentReference docRef1 = db.collection("users").document(id);
+                                    docRef1.get().addOnSuccessListener(documentSnapshot1 -> {
+                                        if (documentSnapshot1.exists()) {
+                                            User otherUser = documentSnapshot.toObject(User.class);
+                                            List<String> referrals = otherUser.getJoinedReferralCode();
+                                            if (referrals == null) {
+                                                referrals = new ArrayList<>();
+                                            }
+                                            Log.d("joned", referrals + "");
+                                            referrals.add(currentMobile);
+                                            docRef1.update("joinedReferralCode", referrals).addOnSuccessListener(aVoid -> {
+                                                referralLayout.setVisibility(View.GONE);
+                                                docRef.update("myJoinedCode", referralInput);
+                                                progress.dismiss();
+                                            });
+                                        } else {
+                                            referralCodeInput.setError("Invalid Code");
                                             progress.dismiss();
-                                        });
-                                    } else {
-                                        referralCodeInput.setError("Invalid Code");
-                                        progress.dismiss();
-                                    }
-                                });
-                            } else {
-                                Log.d("Other referrals", "no code exists");
-                                referralCodeInput.setError("Invalid Code");
-                                progress.dismiss();
-                            }
-                        });
-                    }
-                });
+                                        }
+                                    });
+                                } else {
+                                    Log.d("Other referrals", "no code exists");
+                                    referralCodeInput.setError("Invalid Code");
+                                    progress.dismiss();
+                                }
+                            });
+                        }
+                    });
+                }
             }
         });
         userName.setText(session.getUsername());
@@ -131,6 +141,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setTimestampsInSnapshotsEnabled(true)
+                .setPersistenceEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
     }

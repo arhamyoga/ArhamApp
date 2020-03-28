@@ -122,7 +122,7 @@ public class ExoPlayerManager {
                     db.setFirestoreSettings(settings);
                     mAuth = FirebaseAuth.getInstance();
                     mobileUser = mAuth.getCurrentUser().getPhoneNumber();
-                    final DocumentReference docRef = db.collection("users1").document(mobileUser);
+                    final DocumentReference docRef = db.collection("users").document(mobileUser);
                     docRef.get().addOnSuccessListener(documentSnapshot -> {
                        if(documentSnapshot.exists()) {
                            User user = documentSnapshot.toObject(User.class);
