@@ -4,12 +4,15 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
@@ -24,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.hbb20.CountryCodePicker;
 
 import net.yoga.R;
+import net.yoga.model.User;
 
 import static net.yoga.utils.Utils.isOnline;
 
@@ -34,8 +38,9 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     ProgressDialog progressDialog;
     FirebaseFirestore db;
-    int check;
+    int check=0;
     CountryCodePicker ccp;
+    Bundle bundle = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,21 +95,37 @@ public class LoginActivity extends AppCompatActivity {
                     progressDialog.show();
                     DocumentReference docRef = db.collection("users").document(ccp.getFullNumberWithPlus()+"");
                     docRef.get().addOnSuccessListener(documentSnapshot -> {
-                        Bundle bundle = new Bundle();
                         Log.d("LoginDoc", documentSnapshot.exists() + "");
                         if (documentSnapshot.exists()) {
-                            bundle.putString("status", "login");
-                            bundle.putString("mobile", ccp.getFullNumberWithPlus()+"");
+                            User user = documentSnapshot.toObject(User.class);
+                            String deviceId = user.getDeviceId();
+                            if(deviceId.equals("")) {
+                                check=0;
+                                bundle.putString("status", "login");
+                                bundle.putString("mobile", ccp.getFullNumberWithPlus() + "");
+                            } else {
+                                check=1;
+                                progressDialog.dismiss();
+//                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Already signed in", Snackbar.LENGTH_LONG);
+//                                snackbar.setAction("Dismiss", v1 -> {
+//
+//                                });
+//                                snackbar.show();
+                                showDialog();
+                            }
                         } else {
                             bundle.putString("mobile", ccp.getFullNumberWithPlus()+"");
                             bundle.putString("status", "register");
+                            check=0;
                         }
-                        Log.d("bundle", bundle.toString());
-                        Intent i = new Intent(getApplicationContext(), OTPActivity.class);
-                        i.putExtras(bundle);
-                        progressDialog.dismiss();
-                        startActivity(i);
-                    }).addOnFailureListener(e -> check = 0);
+                        if(check==0) {
+                            Log.d("bundle", bundle.toString());
+                            Intent i = new Intent(getApplicationContext(), OTPActivity.class);
+                            i.putExtras(bundle);
+                            progressDialog.dismiss();
+                            startActivity(i);
+                        }
+                    }).addOnFailureListener(e -> {});
                 } else {
                     Snackbar.make(findViewById(android.R.id.content),"Please check your internet...",Snackbar.LENGTH_SHORT).show();
                 }
@@ -121,6 +142,31 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    private void showDialog() {
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    check=0;
+                    bundle.putString("status", "login");
+                    bundle.putString("mobile", ccp.getFullNumberWithPlus() + "");
+                    Intent i = new Intent(getApplicationContext(), OTPActivity.class);
+                    i.putExtras(bundle);
+                    progressDialog.dismiss();
+                    startActivity(i);
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    //No button clicked
+                    break;
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setMessage("Already logged in from another device. Force sign in from this device will logout you from another device. Do you want to continue?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 
     /*@Override

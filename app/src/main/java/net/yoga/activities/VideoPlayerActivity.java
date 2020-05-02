@@ -79,6 +79,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
     String url;
     String videoTitle;
+    Long startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,8 @@ public class VideoPlayerActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         url = bundle.getString("videoId");
         videoTitle = bundle.getString("videoTitle");
+        startTime = bundle.getLong("starttime");
+
         Log.d("videourl to play",url);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         extractYoutubeUrl();
@@ -110,7 +113,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         Log.d("download url",downloadUrl);
         PlayerView mPlayerView = findViewById(R.id.mPlayerView);
         mPlayerView.setPlayer(ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).getPlayerView().getPlayer());
-        ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).playStream(downloadUrl,url,videoTitle);
+        ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).playStream(downloadUrl,url,videoTitle,startTime);
     }
 
     @Override

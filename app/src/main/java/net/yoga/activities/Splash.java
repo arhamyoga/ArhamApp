@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.provider.Settings;
 import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
@@ -36,7 +38,10 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        initialize();
+    }
 
+    private void initialize() {
         context = this;
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance(FirebaseApp.initializeApp(getApplicationContext()));
@@ -51,41 +56,51 @@ public class Splash extends AppCompatActivity {
                 .build();
         db.setFirestoreSettings(settings);
     }
+
     @Override
-    public void onStart() {
+    protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
+        if(currentUser != null) {
             final String mobileNumber = currentUser.getPhoneNumber();
             DocumentReference docRef = db.collection("users").document(mobileNumber);
             docRef.get().addOnSuccessListener(documentSnapshot -> {
-                Log.d(TAG,"DocumentSplash : "+documentSnapshot.exists());
-                Log.d(TAG,"currentMobile : "+mobileNumber);
-                if(documentSnapshot.exists()){
+                if(documentSnapshot.exists()) {
                     User user = documentSnapshot.toObject(User.class);
-                    Bundle bundle = new Bundle();
-                    List<Campaigns> campaignsList = user.getCampaigns();
-                    if(campaignsList == null || campaignsList.size()==0) {
-                        bundle.putString("campaignenrolled","notanswered");
-                    } else {
-                        for(Campaigns campaigns: campaignsList) {
-                            if(campaigns.getCampaignId().equalsIgnoreCase("Yoga Day")){
-                                if(campaigns.getEnrolled()) {
-                                    bundle.putString("campaignenrolled","enrolled");
+                    String deviceId = user.getDeviceId();
+                    if(deviceId.equals(Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                            Settings.Secure.ANDROID_ID))) {
+                        Bundle bundle = new Bundle();
+                        List<Campaigns> campaignsList = user.getCampaigns();
+                        if(campaignsList == null || campaignsList.size()==0) {
+                            bundle.putString("campaignenrolled","notanswered");
+                        } else {
+                            for(Campaigns campaigns: campaignsList) {
+                                if(campaigns.getCampaignId().equalsIgnoreCase("Yoga Day")){
+                                    if(campaigns.getEnrolled()) {
+                                        bundle.putString("campaignenrolled","enrolled");
+                                    } else {
+                                        bundle.putString("campaignenrolled","notenrolled");
+                                    }
+                                    break;
                                 } else {
-                                    bundle.putString("campaignenrolled","notenrolled");
+                                    bundle.putString("campaignenrolled","notanswered");
                                 }
-                                break;
-                            } else {
-                                bundle.putString("campaignenrolled","notanswered");
                             }
                         }
+                        Log.d(TAG,"SplashBundle : "+bundle);
+                        Intent intent = new Intent(Splash.this,MainActivity.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("mobile",mobileNumber);
+                        Intent i = new Intent(Splash.this, SignUpActivity.class);
+                        i.putExtras(bundle);
+                        startActivity(i);
+                        finish();
                     }
-                    Log.d(TAG,"SplashBundle : "+bundle);
-                    Intent intent = new Intent(Splash.this,MainActivity.class);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                    finish();
                 } else {
                     Bundle bundle = new Bundle();
                     bundle.putString("mobile",mobileNumber);

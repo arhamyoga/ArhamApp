@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SessionManager session;
     TextView showUserDetails;
     String myReferralCode;
+    DocumentReference docRef = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext().getApplicationContext());
         prefsEditor = mSharedPreferences.edit();
         String currentMobile = mAuth.getCurrentUser().getPhoneNumber();
-        DocumentReference docRef = db.collection("users").document(currentMobile);
+        docRef = db.collection("users").document(currentMobile);
 
         //navigation drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -155,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.action_logOut:
                 if(isOnline(getApplicationContext())) {
+                    docRef.update("deviceId","");
                     FirebaseAuth.getInstance().signOut();
                     prefsEditor.clear();
                     prefsEditor.apply();

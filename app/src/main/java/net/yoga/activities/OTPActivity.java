@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -180,8 +182,11 @@ public class OTPActivity extends AppCompatActivity {
                             docRef.get().addOnSuccessListener(documentSnapshot -> {
                                 if(documentSnapshot.exists()){
                                     User user = documentSnapshot.toObject(User.class);
+                                    //String deviceId = user.getDeviceId();
+                                    docRef.update("deviceId", Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                                            Settings.Secure.ANDROID_ID));
                                     docRef.update("fcmId",token).addOnSuccessListener(aVoid -> {
-                                        Log.d("Arham Session","Completed");
+                                        Log.d("Arham Session", "Completed");
                                         progressDialog.dismiss();
                                         Intent intent = new Intent(OTPActivity.this, MainActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -190,9 +195,9 @@ public class OTPActivity extends AppCompatActivity {
                                 }
                             }).addOnFailureListener(e -> {
                                 progressDialog.dismiss();
-                                Intent intent = new Intent(OTPActivity.this, MainActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+//                                Intent intent = new Intent(OTPActivity.this, MainActivity.class);
+//                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                startActivity(intent);
                             });
                         } else {
                             Bundle bundle = new Bundle();

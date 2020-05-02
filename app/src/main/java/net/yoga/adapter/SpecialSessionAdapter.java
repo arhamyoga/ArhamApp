@@ -43,6 +43,7 @@ public class SpecialSessionAdapter extends RecyclerView.Adapter<SpecialSessionAd
         holder.imageView.setOnClickListener(v -> {
             Intent intent = new Intent(context, VideoPlayerActivity.class);
             Bundle bundle = new Bundle();
+            bundle.putLong("starttime",System.currentTimeMillis());
             bundle.putString("videoId", specialSessionVideo.getVideoId());
             bundle.putString("videoTitle",specialSessionVideo.getTitle());
             intent.putExtras(bundle);

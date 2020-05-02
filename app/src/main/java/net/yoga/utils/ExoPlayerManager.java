@@ -33,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import net.yoga.activities.SpecialSessionActivity;
 import net.yoga.interfaces.CallBacks;
 import net.yoga.model.SpecialSessionVideo;
+import net.yoga.model.SpecialVideosTimestamps;
 import net.yoga.model.User;
 
 import java.io.BufferedReader;
@@ -58,6 +59,7 @@ public class ExoPlayerManager {
     FirebaseFirestore db;
 
     String mobileUser="",videoUrl="",videoTitle="";
+    Long startTime;
 
     /**
      * private constructor
@@ -106,7 +108,7 @@ public class ExoPlayerManager {
 
                     playlistIndex++;
                     listner.onItemClickOnItem(playlistIndex);
-                    playStream(mPlayList.get(playlistIndex),videoUrl,videoTitle);
+                    playStream(mPlayList.get(playlistIndex),videoUrl,videoTitle,startTime);
                 } else if (playbackState == 4 && mPlayList != null && playlistIndex + 1 == mPlayList.size()) {
                     mPlayer.setPlayWhenReady(false);
                 }
@@ -122,6 +124,9 @@ public class ExoPlayerManager {
                     db.setFirestoreSettings(settings);
                     mAuth = FirebaseAuth.getInstance();
                     mobileUser = mAuth.getCurrentUser().getPhoneNumber();
+                    SpecialVideosTimestamps specialVideosTimestamps = new SpecialVideosTimestamps();
+                    specialVideosTimestamps.setStartTime(startTime);
+                    specialVideosTimestamps.setEndTime(System.currentTimeMillis());
                     final DocumentReference docRef = db.collection("users").document(mobileUser);
                     docRef.get().addOnSuccessListener(documentSnapshot -> {
                        if(documentSnapshot.exists()) {
@@ -135,6 +140,12 @@ public class ExoPlayerManager {
                            for(SpecialSessionVideo ssv: specialSessionVideos) {
                                if(ssv.getVideoId().equals(videoUrl)) {
                                    ssv.setCount(ssv.getCount()+1);
+                                   List<SpecialVideosTimestamps> sst = ssv.getSpecialVideosTimestampsList();
+                                   if(sst==null) {
+                                       sst = new ArrayList<>();
+                                   }
+                                   sst.add(specialVideosTimestamps);
+                                   ssv.setSpecialVideosTimestampsList(sst);
                                    flag = true;
                                    specialSessionVideos.remove(counter);
                                    specialSessionVideos.add(ssv);
@@ -143,11 +154,15 @@ public class ExoPlayerManager {
                                counter++;
                            }
                            if(!flag) {
+                               List<SpecialVideosTimestamps> sst = new ArrayList<>();
+                               sst.add(specialVideosTimestamps);
                                SpecialSessionVideo specialSessionVideo = new SpecialSessionVideo();
                                specialSessionVideo.setVideoId(videoUrl);
                                specialSessionVideo.setTitle(videoTitle);
                                specialSessionVideo.setCount(1);
                                specialSessionVideo.setWatched(true);
+                               specialSessionVideo.setSpecialVideosTimestampsList(sst);
+
                                specialSessionVideos.add(specialSessionVideo);
                            }
                            docRef.update("specialSessionVideos", specialSessionVideos);
@@ -213,10 +228,11 @@ public class ExoPlayerManager {
         return mPlayerView;
     }
 
-    public void playStream(String urlToPlay,String url,String videoTitle) {
+    public void playStream(String urlToPlay,String url,String videoTitle, Long startTime) {
         uriString = urlToPlay;
         videoUrl = url;
         this.videoTitle = videoTitle;
+        this.startTime = startTime;
         Uri mp4VideoUri = Uri.parse(uriString);
         MediaSource videoSource;
         String filenameArray[] = urlToPlay.split("\\.");
@@ -247,7 +263,7 @@ public class ExoPlayerManager {
         mPlayList = uriArrayList;
         playlistIndex = index;
         listner = callBack;
-        playStream(mPlayList.get(playlistIndex),videoUrl,videoTitle);
+        playStream(mPlayList.get(playlistIndex),videoUrl,videoTitle,startTime);
     }
 
 

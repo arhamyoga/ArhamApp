@@ -2,6 +2,8 @@ package net.yoga.model;
 
 import android.graphics.drawable.Drawable;
 
+import java.util.List;
+
 public class SpecialSessionVideo {
     public String title;
     public Long id;
@@ -10,11 +12,13 @@ public class SpecialSessionVideo {
     public Drawable imageDrawable;
     public boolean isWatched;
     public Integer count;
+    public List<SpecialVideosTimestamps> specialVideosTimestampsList;
 
     public SpecialSessionVideo() {
     }
 
-    public SpecialSessionVideo(String title, Long id, String videoId, String imageUrl, Drawable imageDrawable, boolean isWatched, Integer count) {
+    public SpecialSessionVideo(String title, Long id, String videoId, String imageUrl,
+                               Drawable imageDrawable, boolean isWatched, Integer count, List<SpecialVideosTimestamps> specialVideosTimestampsList) {
         this.title = title;
         this.id = id;
         this.videoId = videoId;
@@ -22,6 +26,7 @@ public class SpecialSessionVideo {
         this.imageDrawable = imageDrawable;
         this.isWatched = isWatched;
         this.count = count;
+        this.specialVideosTimestampsList = specialVideosTimestampsList;
     }
 
     public Drawable getImageDrawable() {
@@ -78,5 +83,13 @@ public class SpecialSessionVideo {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public List<SpecialVideosTimestamps> getSpecialVideosTimestampsList() {
+        return specialVideosTimestampsList;
+    }
+
+    public void setSpecialVideosTimestampsList(List<SpecialVideosTimestamps> specialVideosTimestampsList) {
+        this.specialVideosTimestampsList = specialVideosTimestampsList;
     }
 }
