@@ -80,6 +80,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
     String url;
     String videoTitle;
     Long startTime;
+    String sessionType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +90,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         url = bundle.getString("videoId");
         videoTitle = bundle.getString("videoTitle");
         startTime = bundle.getLong("starttime");
+        sessionType = bundle.getString("sessiontype");
 
         Log.d("videourl to play",url);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -113,7 +115,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         Log.d("download url",downloadUrl);
         PlayerView mPlayerView = findViewById(R.id.mPlayerView);
         mPlayerView.setPlayer(ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).getPlayerView().getPlayer());
-        ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).playStream(downloadUrl,url,videoTitle,startTime);
+        ExoPlayerManager.getSharedInstance(VideoPlayerActivity.this).playStream(downloadUrl,url,videoTitle,startTime,sessionType);
     }
 
     @Override

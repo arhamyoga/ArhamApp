@@ -3,6 +3,7 @@ package net.yoga.utils;
 import android.content.Context;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -18,6 +19,7 @@ public class FBEventLogManager {
     public synchronized static void initialize(Context context) {
         if (fbInstance == null) {
             fbInstance = FirebaseAnalytics.getInstance(context);
+            Log.e("analytics",(fbInstance!=null)?true+"":false+"");
             androidDeviceId = Settings.Secure.getString(context.getContentResolver(),
                     Settings.Secure.ANDROID_ID);
         } else {

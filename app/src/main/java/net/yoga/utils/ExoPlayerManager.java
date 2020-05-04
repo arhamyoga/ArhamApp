@@ -58,7 +58,7 @@ public class ExoPlayerManager {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
 
-    String mobileUser="",videoUrl="",videoTitle="";
+    String mobileUser="",videoUrl="",videoTitle="",sessionType="";
     Long startTime;
 
     /**
@@ -108,7 +108,7 @@ public class ExoPlayerManager {
 
                     playlistIndex++;
                     listner.onItemClickOnItem(playlistIndex);
-                    playStream(mPlayList.get(playlistIndex),videoUrl,videoTitle,startTime);
+                    playStream(mPlayList.get(playlistIndex),videoUrl,videoTitle,startTime,sessionType);
                 } else if (playbackState == 4 && mPlayList != null && playlistIndex + 1 == mPlayList.size()) {
                     mPlayer.setPlayWhenReady(false);
                 }
@@ -126,7 +126,7 @@ public class ExoPlayerManager {
                     mobileUser = mAuth.getCurrentUser().getPhoneNumber();
                     SpecialVideosTimestamps specialVideosTimestamps = new SpecialVideosTimestamps();
                     specialVideosTimestamps.setStartTime(startTime);
-                    specialVideosTimestamps.setEndTime(System.currentTimeMillis());
+                    specialVideosTimestamps.setWatchedTime(System.currentTimeMillis()-startTime);
                     final DocumentReference docRef = db.collection("users").document(mobileUser);
                     docRef.get().addOnSuccessListener(documentSnapshot -> {
                        if(documentSnapshot.exists()) {
@@ -159,6 +159,18 @@ public class ExoPlayerManager {
                                SpecialSessionVideo specialSessionVideo = new SpecialSessionVideo();
                                specialSessionVideo.setVideoId(videoUrl);
                                specialSessionVideo.setTitle(videoTitle);
+                               ArrayList<String> videoType = new ArrayList<>();
+                               if(sessionType.equals("boostup")) {
+                                   videoType.add("boostup");
+                                   videoType.add("meditation");
+                               } else if(sessionType.equals("specialsession")) {
+                                   videoType.add("specialvideo");
+                                   videoType.add("meditation");
+                               } else {
+                                   videoType.add("discovery");
+                                   videoType.add("knowledge");
+                               }
+                               specialSessionVideo.setVideoTypes(videoType);
                                specialSessionVideo.setCount(1);
                                specialSessionVideo.setWatched(true);
                                specialSessionVideo.setSpecialVideosTimestampsList(sst);
@@ -167,6 +179,7 @@ public class ExoPlayerManager {
                            }
                            docRef.update("specialSessionVideos", specialSessionVideos);
                            Intent i = new Intent(mContext.getApplicationContext(), SpecialSessionActivity.class);
+                           i.putExtra("sessiontype",sessionType);
                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                            mContext.startActivity(i);
 
@@ -228,11 +241,12 @@ public class ExoPlayerManager {
         return mPlayerView;
     }
 
-    public void playStream(String urlToPlay,String url,String videoTitle, Long startTime) {
+    public void playStream(String urlToPlay,String url,String videoTitle, Long startTime, String sessionType) {
         uriString = urlToPlay;
         videoUrl = url;
         this.videoTitle = videoTitle;
         this.startTime = startTime;
+        this.sessionType = sessionType;
         Uri mp4VideoUri = Uri.parse(uriString);
         MediaSource videoSource;
         String filenameArray[] = urlToPlay.split("\\.");
@@ -263,7 +277,7 @@ public class ExoPlayerManager {
         mPlayList = uriArrayList;
         playlistIndex = index;
         listner = callBack;
-        playStream(mPlayList.get(playlistIndex),videoUrl,videoTitle,startTime);
+        playStream(mPlayList.get(playlistIndex),videoUrl,videoTitle,startTime,sessionType);
     }
 
 

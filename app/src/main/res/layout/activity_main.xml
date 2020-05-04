@@ -6,38 +6,38 @@
     <!--android:layout_height="match_parent"-->
     <!--tools:context="net.yoga.activities.MainActivity">-->
 
-    <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_above="@+id/start"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:gravity="center"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_marginLeft="25dp"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_marginRight="25dp"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_marginTop="30dp"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_marginBottom="15dp">&ndash;&gt;-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_above="@+id/start"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_marginLeft="25dp"-->
+        <!--android:layout_marginRight="25dp"-->
+        <!--android:layout_marginTop="30dp"-->
+        <!--android:layout_marginBottom="15dp">-->
 
-            <!--&lt;!&ndash;<WebView&ndash;&gt;-->
-                <!--&lt;!&ndash;android:id="@+id/introWebView"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_width="fill_parent"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_weight="1.0"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_height="fill_parent"&ndash;&gt;-->
-                <!--&lt;!&ndash;/>&ndash;&gt;-->
+            <!--<WebView-->
+                <!--android:id="@+id/introWebView"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_weight="1.0"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--/>-->
 
-    <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+    <!--</LinearLayout>-->
 
-    <!--&lt;!&ndash;<Button&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_height="50dp"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:id="@+id/start"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:text="Start"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_marginRight="10dp"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_marginLeft="10dp"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_marginBottom="15dp"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:background="@color/primary_dark"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:textColor="#FFFFFF"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:onClick="openYoga"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_alignParentBottom="true"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_centerHorizontal="true" />&ndash;&gt;-->
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:id="@+id/start"-->
+        <!--android:text="Start"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginBottom="15dp"-->
+        <!--android:background="@color/primary_dark"-->
+        <!--android:textColor="#FFFFFF"-->
+        <!--android:onClick="openYoga"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true" />-->
 
 <!--</RelativeLayout>-->
 <androidx.drawerlayout.widget.DrawerLayout

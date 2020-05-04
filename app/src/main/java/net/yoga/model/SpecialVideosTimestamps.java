@@ -3,14 +3,14 @@ package net.yoga.model;
 public class SpecialVideosTimestamps {
 
     private Long startTime;
-    private Long endTime;
+    private Long watchedTime;
 
     public SpecialVideosTimestamps() {
     }
 
-    public SpecialVideosTimestamps(Long startTime, Long endTime) {
+    public SpecialVideosTimestamps(Long startTime, Long watchedTime) {
         this.startTime = startTime;
-        this.endTime = endTime;
+        this.watchedTime = watchedTime;
     }
 
     public Long getStartTime() {
@@ -21,11 +21,11 @@ public class SpecialVideosTimestamps {
         this.startTime = startTime;
     }
 
-    public Long getEndTime() {
-        return endTime;
+    public Long getWatchedTime() {
+        return watchedTime;
     }
 
-    public void setEndTime(Long endTime) {
-        this.endTime = endTime;
+    public void setWatchedTime(Long watchedTime) {
+        this.watchedTime = watchedTime;
     }
 }

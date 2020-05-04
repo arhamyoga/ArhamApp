@@ -21,10 +21,12 @@ public class SpecialSessionAdapter extends RecyclerView.Adapter<SpecialSessionAd
 
     private Context context;
     private List<SpecialSessionVideo> specialSessionVideos;
+    private String sessionType;
 
-    public SpecialSessionAdapter(Context context, List<SpecialSessionVideo> specialSessionVideos) {
+    public SpecialSessionAdapter(Context context, List<SpecialSessionVideo> specialSessionVideos, String sessionType) {
         this.context = context;
         this.specialSessionVideos = specialSessionVideos;
+        this.sessionType = sessionType;
     }
 
     @NonNull
@@ -46,6 +48,7 @@ public class SpecialSessionAdapter extends RecyclerView.Adapter<SpecialSessionAd
             bundle.putLong("starttime",System.currentTimeMillis());
             bundle.putString("videoId", specialSessionVideo.getVideoId());
             bundle.putString("videoTitle",specialSessionVideo.getTitle());
+            bundle.putString("sessiontype",sessionType);
             intent.putExtras(bundle);
             context.startActivity(intent);
         });

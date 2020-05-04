@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import java.util.List;
 
 public class SpecialSessionVideo {
+
     public String title;
     public Long id;
     public String videoId;
@@ -13,12 +14,14 @@ public class SpecialSessionVideo {
     public boolean isWatched;
     public Integer count;
     public List<SpecialVideosTimestamps> specialVideosTimestampsList;
+    public List<String> videoTypes;
 
     public SpecialSessionVideo() {
     }
 
     public SpecialSessionVideo(String title, Long id, String videoId, String imageUrl,
-                               Drawable imageDrawable, boolean isWatched, Integer count, List<SpecialVideosTimestamps> specialVideosTimestampsList) {
+                               Drawable imageDrawable, boolean isWatched, Integer count, List<SpecialVideosTimestamps> specialVideosTimestampsList,
+                               List<String> videoTypes) {
         this.title = title;
         this.id = id;
         this.videoId = videoId;
@@ -27,6 +30,7 @@ public class SpecialSessionVideo {
         this.isWatched = isWatched;
         this.count = count;
         this.specialVideosTimestampsList = specialVideosTimestampsList;
+        this.videoTypes = videoTypes;
     }
 
     public Drawable getImageDrawable() {
@@ -91,5 +95,13 @@ public class SpecialSessionVideo {
 
     public void setSpecialVideosTimestampsList(List<SpecialVideosTimestamps> specialVideosTimestampsList) {
         this.specialVideosTimestampsList = specialVideosTimestampsList;
+    }
+
+    public List<String> getVideoTypes() {
+        return videoTypes;
+    }
+
+    public void setVideoTypes(List<String> videoTypes) {
+        this.videoTypes = videoTypes;
     }
 }

@@ -14,9 +14,10 @@ public class SpecialSessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_special_session);
+        String videoType = getIntent().getStringExtra("sessiontype");
         if (savedInstanceState == null) {
             FragmentTransaction beginTransaction = getSupportFragmentManager().beginTransaction();
-            beginTransaction.replace(R.id.special_videos_fragment, new SpecialSessionFragment());
+            beginTransaction.replace(R.id.special_videos_fragment, new SpecialSessionFragment(videoType));
             beginTransaction.commit();
         }
     }

@@ -19,4 +19,6 @@
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="colorgrey">#e5e4e4</color>
+    <color name="arhamColor">#FF7D00</color>
+    <color name="dhyanColor">#009BFF</color>
 </resources>

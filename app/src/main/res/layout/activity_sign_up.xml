@@ -21,15 +21,33 @@
             android:gravity="center"
             android:layout_marginTop="25dp"/>
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Arham Yoga &amp; Meditation"
-            android:textSize="30dp"
-            android:id="@+id/engagingVideos"
-            android:textStyle="bold"
             android:layout_below="@+id/access"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:id="@+id/engagingVideos"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Arham"
+                android:textColor="@color/arhamColor"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Dhyan Yoga"
+                android:textStyle="bold"
+                android:textColor="@color/dhyanColor"
+                android:textSize="30dp"
+                android:gravity="center"/>
+
+        </LinearLayout>
 
 
         <com.google.android.material.textfield.TextInputLayout

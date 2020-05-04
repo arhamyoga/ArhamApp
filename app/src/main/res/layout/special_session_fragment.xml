@@ -26,6 +26,7 @@
                 android:layout_height="fill_parent">
 
                 <TextView
+                    android:id="@+id/toolbarText"
                     android:textSize="20.0sp"
                     android:textColor="@color/colorPrimaryDark"
                     android:gravity="start|center"

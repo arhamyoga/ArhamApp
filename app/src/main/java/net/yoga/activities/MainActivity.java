@@ -50,20 +50,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initialize();
 
 //        Bundle bundle = getIntent().getExtras();
 //        String statusCampaign = bundle.getString("campaignenrolled");
 
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setTimestampsInSnapshotsEnabled(true)
-                .build();
-        db.setFirestoreSettings(settings);
-
-        session = new SessionManager(getApplicationContext());
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext().getApplicationContext());
-        prefsEditor = mSharedPreferences.edit();
         String currentMobile = mAuth.getCurrentUser().getPhoneNumber();
         docRef = db.collection("users").document(currentMobile);
 
@@ -111,24 +102,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 userName = Character.toUpperCase(userName.charAt(0))+userName.substring(1);
                 session.createSession(userName,currentUser.getNoOfSessionsCompleted(),myReferralCode);
             }
-        }).addOnFailureListener(e -> {
         });
         if(isOnline(getApplicationContext())&&session.isLoggedIn()){
             docRef.update("noOfSessionsCompleted",session.getArhamSessions()).addOnSuccessListener(aVoid -> Log.d("Arham Session","Completed"));
         }
         if(sessionCount!=null)
-        sessionCount.setText("Sessions completed : " + session.getArhamSessions());
+            sessionCount.setText("Sessions completed : " + session.getArhamSessions());
 
         /*Add in Oncreate() funtion after setContentView()*/
         WebView webView = findViewById(R.id.introWebView);
         String path = "file:///android_asset/intro.html";
         webView.loadUrl(path);
     }
+
+
+    private void initialize() {
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build();
+        db.setFirestoreSettings(settings);
+
+        session = new SessionManager(getApplicationContext());
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext().getApplicationContext());
+        prefsEditor = mSharedPreferences.edit();
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.boostUp:
+                Intent boostup = new Intent(getApplicationContext(),SpecialSessionActivity.class);
+                boostup.putExtra("sessiontype","boostup");
+                startActivity(boostup);
+                finish();
+                break;
+            case R.id.discovery:
+                Intent discovery = new Intent(getApplicationContext(),SpecialSessionActivity.class);
+                discovery.putExtra("sessiontype","discovery");
+                startActivity(discovery);
+                finish();
+                break;
             case R.id.action_specialSession:
                 Intent i3 = new Intent(getApplicationContext(),SpecialSessionActivity.class);
+                i3.putExtra("sessiontype","specialsession");
                 startActivity(i3);
                 finish();
                 break;
@@ -144,11 +162,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.action_rateus:
                 rateUs();
                 break;
-//            case R.id.action_notifications:
-//                Intent i = new Intent(getApplicationContext(),NotificationsActivity.class);
-//                startActivity(i);
-//                finish();
-//                break;
             case R.id.action_arhamTimer:
                 Intent i2 = new Intent(getApplicationContext(),ReminderActivity.class);
                 startActivity(i2);

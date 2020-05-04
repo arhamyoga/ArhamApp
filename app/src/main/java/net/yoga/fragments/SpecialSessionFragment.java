@@ -51,6 +51,12 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
     ProgressBar progressBar;
     ArrayList<String> videoIds = new ArrayList<>();
     private static final String TAG = "SpecialSessionFragment";
+    String activityType;
+    TextView toolbarText;
+
+    public SpecialSessionFragment(String activityType) {
+        this.activityType = activityType;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,13 +75,21 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.getNavigationIcon().mutate().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_IN);
+        toolbarText = toolbar.findViewById(R.id.toolbarText);
+        if(activityType.equals("boostup")) {
+            toolbarText.setText("Boost Up in Lockdown");
+        } else if(activityType.equals("specialsession")) {
+            toolbarText.setText("Special Sessions");
+        } else {
+            toolbarText.setText("Self Discovery");
+        }
         setHasOptionsMenu(true);
         VideoList = view.findViewById(R.id.videos_list);
         specialSessionVideos = new ArrayList<>();
         progressBar = view.findViewById(R.id.no_videos);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getContext());
         VideoList.setLayoutManager(layoutManager);
-        adapter=new SpecialSessionAdapter(view.getContext(), specialSessionVideos);
+        adapter=new SpecialSessionAdapter(view.getContext(), specialSessionVideos,activityType);
         VideoList.setAdapter(adapter);
         if(isOnline(view.getContext())) {
             thumbnailView = new YouTubeThumbnailView(getContext());
@@ -122,7 +136,13 @@ public class SpecialSessionFragment extends Fragment implements YouTubeThumbnail
     public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
         thumbnailLoader = youTubeThumbnailLoader;
         youTubeThumbnailLoader.setOnThumbnailLoadedListener(SpecialSessionFragment.this);
-        thumbnailLoader.setPlaylist("PLP528-nAynDr8t_UAtDyAm6FG9QkyiYIz");//PLDRGddUJfTCDRGewIAwYFLc1PhnaWM8O9
+        if(activityType.equals("specialsession")) {
+            thumbnailLoader.setPlaylist("PLP528-nAynDr8t_UAtDyAm6FG9QkyiYIz");//PLDRGddUJfTCDRGewIAwYFLc1PhnaWM8O9
+        } else if(activityType.equals("boostup")) {
+            thumbnailLoader.setPlaylist("PLP528-nAynDp2JmaBmBdbPFj7GFC8f7CT");//PLDRGddUJfTCDRGewIAwYFLc1PhnaWM8O9
+        } else {
+            thumbnailLoader.setPlaylist("PLP528-nAynDqX3EYOuSmcFW5eJnlgLSxq");
+        }
     }
 
     @Override
